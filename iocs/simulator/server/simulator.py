@@ -10,7 +10,7 @@ class Kepco100:
         self.VOLT_SP = 0.0
         self.MODE = 0
         self.OUTP = 0
-        self.IDN = "KEPCO,BOP1KW 100-10 ,E156805, 2.01"
+        self.IDN = "KEPCO Simulator, ISIS"
         
     def check_command(self, comstr):
         if comstr == "MEAS:CURR?":
