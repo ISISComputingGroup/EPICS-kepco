@@ -1,0 +1,78 @@
+Terminator = '\r\n';
+ReplyTimeout = 2000;
+
+getIDN {
+    out "*IDN?\r\n";
+    #Read no more that 39 chars (EPICS limit)
+    in "%/(.{0,39})/";
+    ExtraInput = Ignore;
+}
+
+RST
+{
+    out "*RST";
+}
+
+setRemote
+{
+    #Needs to be done first
+    out "SYST:REM %{0|1}";
+}
+
+readActualCurrent {
+    out "MEAS:CURR?";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+readSetpointCurrent {
+    out "CURR?";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+writeCurrent 
+{
+    out "CURR %f";
+}
+
+readActualVoltage {
+    out "MEAS:VOLT?";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+readSetpointVoltage {
+    out "VOLT?";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+writeVoltage
+{
+    out "VOLT %f";
+}
+
+readOutputMode
+{
+    out "FUNC:MODE?";
+    in "%d";
+    ExtraInput = Ignore;
+}
+
+setOutputMode
+{
+    out "FUNC:MODE %{VOLT|CURR}";
+}
+
+readOutputStatus
+{
+    out "OUTP?";
+    in "%d";
+    ExtraInput = Ignore;
+}
+
+setOutputStatus
+{
+    out "OUTP %{0|1}";
+}
