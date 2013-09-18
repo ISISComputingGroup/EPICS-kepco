@@ -35,7 +35,7 @@ kepco50_SRCS_vxWorks += -nil-
 #kepco50_OBJS_vxWorks += $(EPICS_BASE_BIN)/vxComLibrary
 
 # Finally link to the EPICS Base libraries
-kepco50_LIBS += $(EPICS_BASE_IOC_LIBS)
+kepco50_LIBS += pcre $(EPICS_BASE_IOC_LIBS)
 
 #===========================
 

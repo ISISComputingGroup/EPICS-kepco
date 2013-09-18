@@ -35,7 +35,7 @@ kepco_sim_SRCS_vxWorks += -nil-
 #kepco_sim_OBJS_vxWorks += $(EPICS_BASE_BIN)/vxComLibrary
 
 # Finally link to the EPICS Base libraries
-kepco_sim_LIBS += $(EPICS_BASE_IOC_LIBS)
+kepco_sim_LIBS += pcre $(EPICS_BASE_IOC_LIBS)
 
 #===========================
 
