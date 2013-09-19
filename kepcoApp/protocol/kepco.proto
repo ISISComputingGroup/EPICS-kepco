@@ -2,7 +2,7 @@ Terminator = '\r\n';
 ReplyTimeout = 2000;
 
 getIDN {
-    out "*IDN?\r\n";
+    out "*IDN?";
     #Read no more that 39 chars (EPICS limit)
     in "%/(.{0,39})/";
     ExtraInput = Ignore;

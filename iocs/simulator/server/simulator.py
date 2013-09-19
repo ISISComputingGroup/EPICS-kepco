@@ -65,18 +65,11 @@ class Kepco100:
             self.OUTP = 1
         return None
 
-class SimulatorTCPHandler(SocketServer.StreamRequestHandler):
-    """
-    The RequestHandler class for our server.
-    It is instantiated once per connection to the server, and must
-    override the handle() method to implement communication to the
-    client.
-    """       
-
+class SimulatorTCPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         global SIMULATOR, DEBUG
         # self.request is the TCP socket connected to the client
-        self.data = self.rfile.readline().strip()
+        self.data = self.request.recv(1024).strip()
         
         ans = SIMULATOR.check_command(self.data)
         
@@ -84,7 +77,7 @@ class SimulatorTCPHandler(SocketServer.StreamRequestHandler):
             print self.data, "returned", ans
         
         if not ans is None:
-            self.wfile.write(ans)
+            self.request.sendall(ans)
             
 if __name__ == "__main__":
     #Argument parser - checks for debug mode and port
