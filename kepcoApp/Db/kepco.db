@@ -19,7 +19,7 @@ record(bo, "$(P)REMOTE")
     field(VAL, "1")
 }
 
-record(ai, "$(P)CURRENT:RB") 
+record(ai, "$(P)CURRENT") 
 {
     field(SCAN, "1 second")
     field(DTYP, "stream")
@@ -28,7 +28,7 @@ record(ai, "$(P)CURRENT:RB")
     field(EGU,  "A")
 }
 
-record(ai, "$(P)CURRENT:SP") 
+record(ai, "$(P)CURRENT:SP:RBV") 
 {
     field(SCAN, "1 second")
     field(DTYP, "stream")
@@ -37,7 +37,7 @@ record(ai, "$(P)CURRENT:SP")
     field(EGU,  "A")
 }
 
-record(ao, "$(P)CURRENT") 
+record(ao, "$(P)CURRENT:SP") 
 {
     field(SCAN, "Passive")
     field(DTYP, "stream")
@@ -48,7 +48,7 @@ record(ao, "$(P)CURRENT")
     field(PREC, "3")
 }
 
-record(ai, "$(P)VOLTAGE:RB") 
+record(ai, "$(P)VOLTAGE") 
 {
     field(SCAN, "1 second")
     field(DTYP, "stream")
@@ -57,7 +57,7 @@ record(ai, "$(P)VOLTAGE:RB")
     field(EGU,  "A")
 }
 
-record(ai, "$(P)VOLTAGE:SP") 
+record(ai, "$(P)VOLTAGE:SP:RBV") 
 {
     field(SCAN, "1 second")
     field(DTYP, "stream")
@@ -66,7 +66,7 @@ record(ai, "$(P)VOLTAGE:SP")
     field(EGU,  "A")
 }
 
-record(ao, "$(P)VOLTAGE") 
+record(ao, "$(P)VOLTAGE:SP") 
 {
     field(SCAN, "Passive")
     field(DTYP, "stream")
@@ -77,7 +77,7 @@ record(ao, "$(P)VOLTAGE")
     field(PREC, "3")
 }
 
-record(bi, "$(P)MODE:RB") 
+record(bi, "$(P)MODE") 
 {
     field(SCAN, "1 second")
     field(DTYP, "stream")
@@ -86,7 +86,7 @@ record(bi, "$(P)MODE:RB")
     field(ONAM, "CURRENT")
 }
 
-record(bo, "$(P)MODE") 
+record(bo, "$(P)MODE:SP") 
 {
     field(SCAN, "Passive")
     field(DTYP, "stream")
@@ -95,7 +95,7 @@ record(bo, "$(P)MODE")
     field(ONAM, "CURRENT")
 }
 
-record(bi, "$(P)OUTPUTSTATUS:RB") 
+record(bi, "$(P)OUTPUTSTATUS") 
 {
     field(SCAN, "1 second")
     field(DTYP, "stream")
@@ -104,7 +104,7 @@ record(bi, "$(P)OUTPUTSTATUS:RB")
     field(ONAM, "ON")
 }
 
-record(bo, "$(P)OUTPUTSTATUS") 
+record(bo, "$(P)OUTPUTSTATUS:SP") 
 {
     field(SCAN, "Passive")
     field(DTYP, "stream")
