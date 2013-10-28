@@ -1,6 +1,6 @@
 #Makefile at top of application tree
 TOP = .
-ACTIONS += uninstall
+#ACTIONS += uninstall
 include $(TOP)/configure/CONFIG
 DIRS := $(DIRS) $(filter-out $(DIRS), configure)
 DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *App))
