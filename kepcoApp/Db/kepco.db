@@ -119,7 +119,7 @@ record(ao, "$(P)VOLTAGE:SP")
     field(SDIS, "$(P)DISABLE")
 }
 
-record(bi, "$(P)MODE") 
+record(bi, "$(P)OUTPUTMODE") 
 {
     field(SCAN, "1 second")
     field(DTYP, "stream")
@@ -127,11 +127,11 @@ record(bi, "$(P)MODE")
     field(ZNAM, "VOLTAGE")
     field(ONAM, "CURRENT")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:MODE")
+    field(SIOL, "$(P)SIM:OUTPUTMODE")
     field(SDIS, "$(P)DISABLE")
 }
 
-record(bo, "$(P)MODE:SP") 
+record(bo, "$(P)OUTPUTMODE:SP") 
 {
     field(SCAN, "Passive")
     field(DTYP, "stream")
@@ -139,11 +139,11 @@ record(bo, "$(P)MODE:SP")
     field(ZNAM, "VOLTAGE")
     field(ONAM, "CURRENT")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:MODE:SP")
+    field(SIOL, "$(P)SIM:OUTPUTMODE:SP")
     field(SDIS, "$(P)DISABLE")
 }
 
-alias("$(P)MODE", "$(P)MODE:SP:RBV")
+alias("$(P)OUTPUTMODE", "$(P)OUTPUTMODE:SP:RBV")
 
 record(bi, "$(P)OUTPUTSTATUS") 
 {
@@ -205,15 +205,15 @@ alias("$(P)SIM:VOLTAGE","$(P)SIM:VOLTAGE:SP")
 
 alias("$(P)SIM:VOLTAGE","$(P)SIM:VOLTAGE:SP:RBV")
 
-record(bi, "$(P)SIM:MODE")
+record(bi, "$(P)SIM:OUTPUTMODE")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
 }
 
-alias("$(P)SIM:MODE","$(P)SIM:MODE:SP")
+alias("$(P)SIM:OUTPUTMODE","$(P)SIM:OUTPUTMODE:SP")
 
-alias("$(P)SIM:MODE","$(P)SIM:MODE:SP:RBV")
+alias("$(P)SIM:OUTPUTMODE","$(P)SIM:OUTPUTMODE:SP:RBV")
 
 record(bi, "$(P)SIM:OUTPUTSTATUS")
 {
