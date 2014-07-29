@@ -11,8 +11,8 @@ epicsEnvSet "TTY" "$(TTY=\\\\\\\\.\\\\COM18)"
 cd ${TOP}
 
 ## Register all support components
-dbLoadDatabase "dbd/kepco50.dbd"
-kepco50_registerRecordDeviceDriver pdbbase
+dbLoadDatabase "dbd/KEPCO50-IOC-01.dbd"
+KEPCO50_IOC_01_registerRecordDeviceDriver pdbbase
 
 < $(IOCSTARTUP)/init.cmd
 

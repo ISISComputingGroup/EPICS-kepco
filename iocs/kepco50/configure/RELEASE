@@ -21,17 +21,23 @@
 
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
-# If using the sequencer, point SNCSEQ at its top directory:
-ASYN=$(SUPPORT)/asyn/4-22
-STREAMDEVICE=$(SUPPORT)/StreamDevice
-DEVIOCSTATS=$(SUPPORT)/devIocStats/3-1-11
-PCRE=$(SUPPORT)/pcre
+## ISIS standard modules ##
+ICPCONFIG=$(SUPPORT)/icpconfig
 PVDUMP=$(SUPPORT)/pvdump
+PVCOMPLETE=$(SUPPORT)/pvcomplete
+DEVIOCSTATS=$(SUPPORT)/devIocStats/3-1-11
+AUTOSAVE=$(SUPPORT)/autosave/R5_0
+SNCSEQ=$(SUPPORT)/seq/2-1-11
+CAPUTLOG=$(SUPPORT)/caPutLog/3-3-3
 SQLITE=$(SUPPORT)/sqlite
 UTILITIES=$(SUPPORT)/utilities
 ZLIB=$(SUPPORT)/zlib/1-2-8
-ICPCONFIG=$(SUPPORT)/icpconfig
-AUTOSAVE=$(SUPPORT)/autosave/R5_0
+ASUBFUNCTIONS=$(SUPPORT)/asubFunctions
+
+## add other modules here ##
+ASYN=$(SUPPORT)/asyn/4-22
+STREAMDEVICE=$(SUPPORT)/StreamDevice
+PCRE=$(SUPPORT)/pcre
 ONCRPC=$(SUPPORT)/oncrpc/2
     
 # EPICS_BASE usually appears last so other apps can override stuff:
