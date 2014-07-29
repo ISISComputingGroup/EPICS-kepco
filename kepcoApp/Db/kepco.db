@@ -45,6 +45,7 @@ record(bo, "$(P)REMOTE")
 
 record(ai, "$(P)CURRENT") 
 {
+    info(INTEREST, "HIGH")
     field(SCAN, "1 second")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readActualCurrent $(PORT)")
@@ -83,6 +84,7 @@ record(ao, "$(P)CURRENT:SP")
 
 record(ai, "$(P)VOLTAGE") 
 {
+    info(INTEREST, "HIGH")
     field(SCAN, "1 second")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readActualVoltage $(PORT)")
