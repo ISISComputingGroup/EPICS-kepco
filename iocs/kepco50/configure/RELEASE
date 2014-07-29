@@ -26,6 +26,13 @@ ASYN=$(SUPPORT)/asyn/4-22
 STREAMDEVICE=$(SUPPORT)/StreamDevice
 DEVIOCSTATS=$(SUPPORT)/devIocStats/3-1-11
 PCRE=$(SUPPORT)/pcre
+PVDUMP=$(SUPPORT)/pvdump
+SQLITE=$(SUPPORT)/sqlite
+UTILITIES=$(SUPPORT)/utilities
+ZLIB=$(SUPPORT)/zlib/1-2-8
+ICPCONFIG=$(SUPPORT)/icpconfig
+AUTOSAVE=$(SUPPORT)/autosave/R5_0
+ONCRPC=$(SUPPORT)/oncrpc/2
     
 # EPICS_BASE usually appears last so other apps can override stuff:
 EPICS_BASE=C:/EPICS/base/3-14-12-2

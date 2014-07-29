@@ -20,9 +20,10 @@ kepco100_DBD += asyn.dbd
 kepco100_DBD += drvAsynSerialPort.dbd
 kepco100_DBD += drvAsynIPPort.dbd
 kepco100_DBD += devIocStats.dbd
+kepco100_DBD += pvdump.dbd 
 
 kepco100_LIBS += stream
-kepco100_LIBS += asyn devIocStats  
+kepco100_LIBS += asyn devIocStats pvdump easySQLite sqlite utilities icpconfig
 
 # kepco100_registerRecordDeviceDriver.cpp derives from kepco100.dbd
 kepco100_SRCS += kepco100_registerRecordDeviceDriver.cpp

@@ -5,10 +5,7 @@
 
 < envPaths
 
-epicsEnvSet "IOCNAME" "$(P=$(MYPVPREFIX))KEPCOSIM"
-epicsEnvSet "IOCSTATS_DB" "$(DEVIOCSTATS)/db/iocAdminSoft.db"
 epicsEnvSet "STREAM_PROTOCOL_PATH" "$(TOP)/../../kepcoApp/protocol"
-#epicsEnvSet "TTY" "$(TTY=\\\\\\\\.\\\\COM17)"
 
 cd ${TOP}
 
@@ -16,12 +13,19 @@ cd ${TOP}
 dbLoadDatabase "dbd/kepco_sim.dbd"
 kepco_sim_registerRecordDeviceDriver pdbbase
 
+< $(IOCSTARTUP)/init.cmd
+
 drvAsynIPPortConfigure ("PS1", "127.0.0.1:9999")
 
+< $(IOCSTARTUP)/dbload.cmd
+
 ## Load record instances
-dbLoadRecords("$(TOP)/../../db/kepco.db","P=$(IOCNAME):, PORT=PS1")
-#dbLoadRecords("$(IOCSTATS_DB)","IOC=$(IOCNAME)")
+dbLoadRecords("$(TOP)/../../db/kepco.db","P=$(MYPVPREFIX)KEPCOSIM:, PORT=PS1")
+
+< $(IOCSTARTUP)/preiocinit.cmd
 
 cd ${TOP}/iocBoot/${IOC}
 iocInit
+
+< $(IOCSTARTUP)/postiocinit.cmd
 

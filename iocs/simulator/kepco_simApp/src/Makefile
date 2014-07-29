@@ -20,9 +20,10 @@ kepco_sim_DBD += asyn.dbd
 kepco_sim_DBD += drvAsynSerialPort.dbd
 kepco_sim_DBD += drvAsynIPPort.dbd
 kepco_sim_DBD += devIocStats.dbd
+kepco_sim_DBD += pvdump.dbd 
 
 kepco_sim_LIBS += stream
-kepco_sim_LIBS += asyn devIocStats  
+kepco_sim_LIBS += asyn devIocStats pvdump easySQLite sqlite utilities icpconfig
 
 # kepco_sim_registerRecordDeviceDriver.cpp derives from kepco_sim.dbd
 kepco_sim_SRCS += kepco_sim_registerRecordDeviceDriver.cpp
