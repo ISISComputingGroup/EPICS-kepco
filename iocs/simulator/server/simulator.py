@@ -83,7 +83,7 @@ if __name__ == "__main__":
     #Argument parser - checks for debug mode and port
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--debug', action='store_true', help='put into debug mode')
-    parser.add_argument('-p', '--port', type=int, nargs=1, default=9999, help='server port')
+    parser.add_argument('-p', '--port', type=int, nargs=1, default=[9999], help='server port')
     args = parser.parse_args()
     DEBUG = args.debug
     
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     SIMULATOR = Kepco100()
     
     # Create the server, binding to localhost on port 
-    server = SocketServer.TCPServer(("localhost", args.port), SimulatorTCPHandler)
+    server = SocketServer.TCPServer(("localhost", args.port[0]), SimulatorTCPHandler)
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
