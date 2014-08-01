@@ -28,6 +28,17 @@ record(stringin, "$(P)IDN")
     field(SDIS, "$(P)DISABLE")
 }
 
+record(stringin, "$(P)RST")
+{
+    field(DESC, "SCPI identification string")
+    field(DTYP, "stream")
+    field(INP,  "@kepco.proto RST $(PORT)")
+    field(PINI, "$(RESET=NO)")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:RST")
+    field(SDIS, "$(P)DISABLE")
+} 
+
 record(bo, "$(P)REMOTE") 
 {
     #Must be put into remote before PSU related commands sent
@@ -192,6 +203,12 @@ record(bo, "$(P)SIM:REMOTE")
 }
 
 record(stringin, "$(P)SIM:IDN")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "Soft Channel")
+}
+
+record(stringin, "$(P)SIM:RST")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
