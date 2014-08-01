@@ -6,7 +6,7 @@
 < envPaths
 
 epicsEnvSet "STREAM_PROTOCOL_PATH" "$(TOP)/../../kepcoApp/protocol"
-epicsEnvSet "TTY" "$(TTY=\\\\\\\\.\\\\COM18)"
+epicsEnvSet "TTY" "$(TTY=\\\\\\\\.\\\\COM19)"
 
 cd ${TOP}
 
@@ -25,7 +25,7 @@ asynSetOption("L0", -1, "stop", "1")
 < $(IOCSTARTUP)/dbload.cmd
 
 ## Load record instances
-dbLoadRecords("$(TOP)/../../db/kepco.db","P=$(MYPVPREFIX)$(IOCNAME):, PORT=L0")
+dbLoadRecords("$(TOP)/../../db/kepco.db","P=$(MYPVPREFIX)$(IOCNAME):, PORT=L0, RESET=YES")
 
 < $(IOCSTARTUP)/preiocinit.cmd
 
