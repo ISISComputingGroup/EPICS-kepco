@@ -56,6 +56,7 @@ record(bo, "$(P)REMOTE")
 
 record(ai, "$(P)CURRENT") 
 {
+    field(DESC, "Current")
     info(INTEREST, "HIGH")
     field(SCAN, "1 second")
     field(DTYP, "stream")
@@ -95,6 +96,7 @@ record(ao, "$(P)CURRENT:SP")
 
 record(ai, "$(P)VOLTAGE") 
 {
+    field(DESC, "Voltage")
     info(INTEREST, "HIGH")
     field(SCAN, "1 second")
     field(DTYP, "stream")
