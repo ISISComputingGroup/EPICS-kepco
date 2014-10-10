@@ -1,5 +1,5 @@
 TOP = ..
 include $(TOP)/configure/CONFIG
-DIRS := $(wildcard kepco100_10mg simulator kepco50)
+DIRS := $(wildcard simulator)
 ACTIONS += uninstall
 include $(TOP)/configure/RULES_DIRS
