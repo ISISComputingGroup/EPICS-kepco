@@ -23,7 +23,7 @@ kepco_sim_DBD += devIocStats.dbd
 kepco_sim_DBD += pvdump.dbd 
 
 kepco_sim_LIBS += stream
-kepco_sim_LIBS += asyn devIocStats pvdump easySQLite sqlite utilities icpconfig
+kepco_sim_LIBS += asyn devIocStats pvdump easySQLite sqlite utilities icpconfig pugixml
 
 # kepco_sim_registerRecordDeviceDriver.cpp derives from kepco_sim.dbd
 kepco_sim_SRCS += kepco_sim_registerRecordDeviceDriver.cpp
