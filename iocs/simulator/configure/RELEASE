@@ -28,6 +28,7 @@ DEVIOCSTATS=$(SUPPORT)/devIocStats/3-1-11
 PCRE=$(SUPPORT)/pcre
 PVDUMP=$(SUPPORT)/pvdump
 SQLITE=$(SUPPORT)/sqlite
+LIBJSON=$(SUPPORT)/libjson
 UTILITIES=$(SUPPORT)/utilities
 ZLIB=$(SUPPORT)/zlib/1-2-8
 PUGIXML=$(SUPPORT)/pugixml
