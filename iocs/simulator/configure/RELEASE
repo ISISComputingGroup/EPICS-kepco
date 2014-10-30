@@ -32,7 +32,7 @@ UTILITIES=$(SUPPORT)/utilities
 ZLIB=$(SUPPORT)/zlib/1-2-8
 PUGIXML=$(SUPPORT)/pugixml
 ICPCONFIG=$(SUPPORT)/icpconfig
-AUTOSAVE=$(SUPPORT)/autosave/R5_0
+AUTOSAVE=$(SUPPORT)/autosave/R5_4_2
 ONCRPC=$(SUPPORT)/oncrpc/2
 
 # EPICS_BASE usually appears last so other apps can override stuff:
