@@ -57,7 +57,6 @@ record(bo, "$(P)REMOTE")
 record(ai, "$(P)CURRENT") 
 {
     field(DESC, "Current")
-    info(INTEREST, "HIGH")
     field(SCAN, "1 second")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readActualCurrent $(PORT)")
@@ -66,6 +65,8 @@ record(ai, "$(P)CURRENT")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:CURRENT")
     field(SDIS, "$(P)DISABLE")
+    info(INTEREST, "HIGH")
+    info(archive, "VAL")
 }
 
 record(ai, "$(P)CURRENT:SP:RBV") 
@@ -78,6 +79,8 @@ record(ai, "$(P)CURRENT:SP:RBV")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:CURRENT:SP:RBV")
     field(SDIS, "$(P)DISABLE")
+    info(INTEREST, "HIGH")
+    info(archive, "VAL")
 }
 
 record(ao, "$(P)CURRENT:SP") 
@@ -92,12 +95,13 @@ record(ao, "$(P)CURRENT:SP")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:CURRENT:SP")
     field(SDIS, "$(P)DISABLE")
+    info(INTEREST, "HIGH")
+    info(archive, "VAL")
 }
 
 record(ai, "$(P)VOLTAGE") 
 {
     field(DESC, "Voltage")
-    info(INTEREST, "HIGH")
     field(SCAN, "1 second")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readActualVoltage $(PORT)")
@@ -106,6 +110,8 @@ record(ai, "$(P)VOLTAGE")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:VOLTAGE")
     field(SDIS, "$(P)DISABLE")
+    info(INTEREST, "HIGH")
+    info(archive, "VAL")
 }
 
 record(ai, "$(P)VOLTAGE:SP:RBV") 
@@ -118,6 +124,8 @@ record(ai, "$(P)VOLTAGE:SP:RBV")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:VOLTAGE:SP:RBV")
     field(SDIS, "$(P)DISABLE")
+    info(INTEREST, "HIGH")
+    info(archive, "VAL")
 }
 
 record(ao, "$(P)VOLTAGE:SP") 
@@ -132,6 +140,8 @@ record(ao, "$(P)VOLTAGE:SP")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:VOLTAGE:SP")
     field(SDIS, "$(P)DISABLE")
+    info(INTEREST, "HIGH")
+    info(archive, "VAL")
 }
 
 record(bi, "$(P)OUTPUTMODE") 
