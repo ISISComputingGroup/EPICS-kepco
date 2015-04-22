@@ -71,6 +71,7 @@ record(ai, "$(P)CURRENT")
 
 record(ai, "$(P)CURRENT:SP:RBV") 
 {
+    field(DESC, "Current Setpoint Readback")
     field(SCAN, "1 second")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readSetpointCurrent $(PORT)")
@@ -85,6 +86,7 @@ record(ai, "$(P)CURRENT:SP:RBV")
 
 record(ao, "$(P)CURRENT:SP") 
 {
+    field(DESC, "Current Setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
     field(OUT,  "@kepco.proto writeCurrent $(PORT)")
@@ -116,6 +118,7 @@ record(ai, "$(P)VOLTAGE")
 
 record(ai, "$(P)VOLTAGE:SP:RBV") 
 {
+    field(DESC, "Voltage setpoint readback")
     field(SCAN, "1 second")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readSetpointVoltage $(PORT)")
@@ -130,6 +133,7 @@ record(ai, "$(P)VOLTAGE:SP:RBV")
 
 record(ao, "$(P)VOLTAGE:SP") 
 {
+    field(DESC, "Voltage setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
     field(OUT,  "@kepco.proto writeVoltage $(PORT)")
