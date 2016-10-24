@@ -13,3 +13,4 @@ runIOC.sh
 relPaths.sh
 /iocs/simulator/bin/
 /iocs/simulator/dbd/
+.project
