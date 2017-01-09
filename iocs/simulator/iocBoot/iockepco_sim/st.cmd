@@ -20,7 +20,7 @@ drvAsynIPPortConfigure ("PS1", "127.0.0.1:9999")
 < $(IOCSTARTUP)/dbload.cmd
 
 ## Load record instances
-dbLoadRecords("$(TOP)/../../db/kepco.db","P=$(MYPVPREFIX)KEPCOSIM:, PORT=PS1")
+dbLoadRecords("$(TOP)/../../db/kepco.db","P=$(MYPVPREFIX)KEPCOSIM:, PORT=PS1, DISABLE=$(DISABLE=0),RECSIM=$(RECSIM=0)")
 
 < $(IOCSTARTUP)/preiocinit.cmd
 
