@@ -1,6 +1,5 @@
 # START OF AUTO GENERATED DEPENDENCIES
 ASYN=$(SUPPORT)/asyn/master
-ASYN=$(SUPPORT)/asyn/master
 ONCRPC=$(SUPPORT)/oncrpc/master
 DEVIOCSTATS=$(SUPPORT)/devIocStats/master
 ICPCONFIG=$(SUPPORT)/icpconfig/master
