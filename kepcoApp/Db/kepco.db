@@ -185,6 +185,7 @@ record(bi, "$(P)OUTPUTSTATUS")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:OUTPUTSTATUS")
     field(SDIS, "$(P)DISABLE")
+    info(alarm, "KEPCO")
 }
 
 record(bo, "$(P)OUTPUTSTATUS:SP") 
