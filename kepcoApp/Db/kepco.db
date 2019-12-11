@@ -83,6 +83,8 @@ record(ai, "$(P)CURRENT:SP:RBV")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
+    
+    field(FLNK, "$(P)CURRENT:SP:RBV")
 }
 
 record(ao, "$(P)CURRENT:SP") 
@@ -147,6 +149,8 @@ record(ao, "$(P)VOLTAGE:SP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
+    
+    field(FLNK, "$(P)VOLTAGE:SP:RBV")
 }
 
 record(bi, "$(P)OUTPUTMODE") 
@@ -171,6 +175,8 @@ record(bo, "$(P)OUTPUTMODE:SP")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:OUTPUTMODE:SP")
     field(SDIS, "$(P)DISABLE")
+    
+    field(FLNK, "$(P)OUTPUTMODE")
 }
 
 alias("$(P)OUTPUTMODE", "$(P)OUTPUTMODE:SP:RBV")
@@ -198,6 +204,8 @@ record(bo, "$(P)OUTPUTSTATUS:SP")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:OUTPUTSTATUS:SP")
     field(SDIS, "$(P)DISABLE")
+    
+    field(FLNK, "$(P)OUTPUTSTATUS")
 }
 
 alias("$(P)OUTPUTSTATUS", "$(P)OUTPUTSTATUS:SP:RBV")
