@@ -83,8 +83,6 @@ record(ai, "$(P)CURRENT:SP:RBV")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
-    
-    field(FLNK, "$(P)CURRENT:SP:RBV")
 }
 
 record(ao, "$(P)CURRENT:SP") 
@@ -102,6 +100,8 @@ record(ao, "$(P)CURRENT:SP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
+    
+    field(FLNK, "$(P)CURRENT:SP:RBV")
 }
 
 record(ai, "$(P)VOLTAGE") 
