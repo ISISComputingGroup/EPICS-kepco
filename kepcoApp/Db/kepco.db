@@ -70,10 +70,19 @@ record(ai, "$(P)CURRENT")
     info(archive, "VAL")
 }
 
+# Scan CURRENT:SP:RBV from here allows us to FLNK to CURRENT:SP:RBV if we need to trigger
+# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
+# an update from the protocol file whenever a new SP is sent.
+record(bo, "$(P)CURRENT:SP:RBV:_SCAN") 
+{
+    field(SCAN, "1 second")
+    field(FLNK, "$(P)CURRENT:SP:RBV")
+}
+
 record(ai, "$(P)CURRENT:SP:RBV") 
 {
     field(DESC, "Current Setpoint Readback")
-    field(SCAN, "1 second")
+    field(SCAN, "Passive")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readSetpointCurrent $(PORT)")
     field(PREC, "3")
@@ -90,18 +99,16 @@ record(ao, "$(P)CURRENT:SP")
     field(DESC, "Current Setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto writeCurrent $(PORT)")
+    field(OUT,  "@kepco.proto writeCurrent($(P)) $(PORT)")
     field(EGU, "A")
     #field(HOPR, "5.0")
     #field(LOPR, "0.01")    
     field(PREC, "3")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:CURRENT:SP")
+    field(SIOL, "$(P)SIM:CURRENT:SP PP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
-    
-    field(FLNK, "$(P)CURRENT:SP:RBV")
 }
 
 record(ai, "$(P)VOLTAGE") 
@@ -119,10 +126,19 @@ record(ai, "$(P)VOLTAGE")
     info(archive, "VAL")
 }
 
+# Scan VOLTAGE:SP:RBV from here allows us to FLNK to VOLTAGE:SP:RBV if we need to trigger
+# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
+# an update from the protocol file whenever a new SP is sent.
+record(bo, "$(P)VOLTAGE:SP:RBV:_SCAN") 
+{
+    field(SCAN, "1 second")
+    field(FLNK, "$(P)VOLTAGE:SP:RBV")
+}
+
 record(ai, "$(P)VOLTAGE:SP:RBV") 
 {
     field(DESC, "Voltage setpoint readback")
-    field(SCAN, "1 second")
+    field(SCAN, "Passive")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readSetpointVoltage $(PORT)")
     field(PREC, "3")
@@ -139,18 +155,16 @@ record(ao, "$(P)VOLTAGE:SP")
     field(DESC, "Voltage setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto writeVoltage $(PORT)")
+    field(OUT,  "@kepco.proto writeVoltage($(P)) $(PORT)")
     field(EGU, "V")
     #field(HOPR, "5.0")
     #field(LOPR, "0.01")    
     field(PREC, "3")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:VOLTAGE:SP")
+    field(SIOL, "$(P)SIM:VOLTAGE:SP PP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
-    
-    field(FLNK, "$(P)VOLTAGE:SP:RBV")
 }
 
 record(bi, "$(P)OUTPUTMODE") 
@@ -173,10 +187,10 @@ record(bo, "$(P)OUTPUTMODE:SP")
     field(ZNAM, "VOLTAGE")
     field(ONAM, "CURRENT")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:OUTPUTMODE:SP")
+    field(SIOL, "$(P)SIM:OUTPUTMODE:SP PP")
     field(SDIS, "$(P)DISABLE")
     
-    field(FLNK, "$(P)OUTPUTMODE")
+    field(FLNK, "$(P)OUTPUTMODE.PROC")
 }
 
 alias("$(P)OUTPUTMODE", "$(P)OUTPUTMODE:SP:RBV")
@@ -202,10 +216,10 @@ record(bo, "$(P)OUTPUTSTATUS:SP")
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:OUTPUTSTATUS:SP")
+    field(SIOL, "$(P)SIM:OUTPUTSTATUS:SP PP")
     field(SDIS, "$(P)DISABLE")
     
-    field(FLNK, "$(P)OUTPUTSTATUS")
+    field(FLNK, "$(P)OUTPUTSTATUS.PROC")
 }
 
 alias("$(P)OUTPUTSTATUS", "$(P)OUTPUTSTATUS:SP:RBV")
@@ -216,6 +230,12 @@ record(ai, "$(P)SIM:CURRENT")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
+    
+    # On real device, we update SP:RBV from the protocol whenever a new SP is sent.
+    # This FLNK approximates this behaviour in recsim mode.
+    # The muon ZF system requires fairly quick updates of setpoint readbacks after setting
+    # setpoints, hence this extra complexity.
+    field(FLNK, "$(P)CURRENT:SP:RBV")
 }
 
 alias("$(P)SIM:CURRENT","$(P)SIM:CURRENT:SP")
@@ -244,6 +264,12 @@ record(ai, "$(P)SIM:VOLTAGE")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
+    
+    # On real device, we update SP:RBV from the protocol whenever a new SP is sent.
+    # This FLNK approximates this behaviour in recsim mode.
+    # The muon ZF system requires fairly quick updates of setpoint readbacks after setting
+    # setpoints, hence this extra complexity.
+    field(FLNK, "$(P)VOLTAGE:SP:RBV")
 }
 
 alias("$(P)SIM:VOLTAGE","$(P)SIM:VOLTAGE:SP")
