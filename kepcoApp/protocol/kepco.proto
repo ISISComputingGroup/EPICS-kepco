@@ -59,7 +59,7 @@ writeVoltage
     
     # immediately update SP:RBV
     out "VOLT?";
-    in "%(\$VOLTAGE:SP:RBV)f";
+    in "%(\$1VOLTAGE:SP:RBV)f";
     ExtraInput = Ignore;
 }
 
@@ -73,6 +73,11 @@ readOutputMode
 setOutputMode
 {
     out "FUNC:MODE %{VOLT|CURR}";
+    
+    # Immediately update readback
+    out "FUNC:MODE?";
+    in "%(\$1OUTPUTMODE)d";
+    ExtraInput = Ignore;
 }
 
 readOutputStatus
@@ -85,4 +90,9 @@ readOutputStatus
 setOutputStatus
 {
     out "OUTP %{0|1}";
+    
+    # Immediately update readback
+    out "OUTP?";
+    in "%(\$1OUTPUTSTATUS)d";
+    ExtraInput = Ignore;
 }
