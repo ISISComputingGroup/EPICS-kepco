@@ -70,10 +70,19 @@ record(ai, "$(P)CURRENT")
     info(archive, "VAL")
 }
 
+# Scan from here allows us to FLNK to readback if we need to trigger
+# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
+# an update from the protocol file whenever a new SP is sent.
+record(bo, "$(P)CURRENT:SP:RBV:_SCAN") 
+{
+    field(SCAN, "1 second")
+    field(FLNK, "$(P)CURRENT:SP:RBV")
+}
+
 record(ai, "$(P)CURRENT:SP:RBV") 
 {
     field(DESC, "Current Setpoint Readback")
-    field(SCAN, "1 second")
+    field(SCAN, "Passive")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readSetpointCurrent $(PORT)")
     field(PREC, "3")
@@ -90,13 +99,13 @@ record(ao, "$(P)CURRENT:SP")
     field(DESC, "Current Setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto writeCurrent $(PORT)")
+    field(OUT,  "@kepco.proto writeCurrent($(P)) $(PORT)")
     field(EGU, "A")
     #field(HOPR, "5.0")
     #field(LOPR, "0.01")    
     field(PREC, "3")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:CURRENT:SP")
+    field(SIOL, "$(P)SIM:CURRENT:SP PP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
@@ -117,10 +126,19 @@ record(ai, "$(P)VOLTAGE")
     info(archive, "VAL")
 }
 
+# Scan from here allows us to FLNK to readback if we need to trigger
+# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
+# an update from the protocol file whenever a new SP is sent.
+record(bo, "$(P)VOLTAGE:SP:RBV:_SCAN") 
+{
+    field(SCAN, "1 second")
+    field(FLNK, "$(P)VOLTAGE:SP:RBV")
+}
+
 record(ai, "$(P)VOLTAGE:SP:RBV") 
 {
     field(DESC, "Voltage setpoint readback")
-    field(SCAN, "1 second")
+    field(SCAN, "Passive")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readSetpointVoltage $(PORT)")
     field(PREC, "3")
@@ -137,21 +155,30 @@ record(ao, "$(P)VOLTAGE:SP")
     field(DESC, "Voltage setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto writeVoltage $(PORT)")
+    field(OUT,  "@kepco.proto writeVoltage($(P)) $(PORT)")
     field(EGU, "V")
     #field(HOPR, "5.0")
     #field(LOPR, "0.01")    
     field(PREC, "3")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:VOLTAGE:SP")
+    field(SIOL, "$(P)SIM:VOLTAGE:SP PP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
 }
 
-record(bi, "$(P)OUTPUTMODE") 
+# Scan from here allows us to FLNK to readback if we need to trigger
+# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
+# an update from the protocol file whenever a new SP is sent.
+record(bo, "$(P)OUTPUTMODE:_SCAN") 
 {
     field(SCAN, "1 second")
+    field(FLNK, "$(P)OUTPUTMODE")
+}
+
+record(bi, "$(P)OUTPUTMODE") 
+{
+    field(SCAN, "Passive")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readOutputMode $(PORT)")
     field(ZNAM, "VOLTAGE")
@@ -165,19 +192,29 @@ record(bo, "$(P)OUTPUTMODE:SP")
 {
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto setOutputMode $(PORT)")
+    field(OUT,  "@kepco.proto setOutputMode($(P)) $(PORT)")
     field(ZNAM, "VOLTAGE")
     field(ONAM, "CURRENT")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:OUTPUTMODE:SP")
+    field(SIOL, "$(P)SIM:OUTPUTMODE:SP PP")
     field(SDIS, "$(P)DISABLE")
 }
 
 alias("$(P)OUTPUTMODE", "$(P)OUTPUTMODE:SP:RBV")
 
-record(bi, "$(P)OUTPUTSTATUS") 
+
+# Scan from here allows us to FLNK to readback if we need to trigger
+# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
+# an update from the protocol file whenever a new SP is sent.
+record(bo, "$(P)OUTPUTSTATUS:_SCAN") 
 {
     field(SCAN, "1 second")
+    field(FLNK, "$(P)OUTPUTSTATUS")
+}
+
+record(bi, "$(P)OUTPUTSTATUS") 
+{
+    field(SCAN, "Passive")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readOutputStatus $(PORT)")
     field(ZNAM, "OFF")
@@ -192,11 +229,11 @@ record(bo, "$(P)OUTPUTSTATUS:SP")
 {
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto setOutputStatus $(PORT)")
+    field(OUT,  "@kepco.proto setOutputStatus($(P)) $(PORT)")
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:OUTPUTSTATUS:SP")
+    field(SIOL, "$(P)SIM:OUTPUTSTATUS:SP PP")
     field(SDIS, "$(P)DISABLE")
 }
 
@@ -208,6 +245,12 @@ record(ai, "$(P)SIM:CURRENT")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
+    
+    # On real device, we update SP:RBV from the protocol whenever a new SP is sent.
+    # This FLNK approximates this behaviour in recsim mode.
+    # The muon ZF system requires fairly quick updates of setpoint readbacks after setting
+    # setpoints, hence this extra complexity.
+    field(FLNK, "$(P)CURRENT:SP:RBV")
 }
 
 alias("$(P)SIM:CURRENT","$(P)SIM:CURRENT:SP")
@@ -236,6 +279,12 @@ record(ai, "$(P)SIM:VOLTAGE")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
+    
+    # On real device, we update SP:RBV from the protocol whenever a new SP is sent.
+    # This FLNK approximates this behaviour in recsim mode.
+    # The muon ZF system requires fairly quick updates of setpoint readbacks after setting
+    # setpoints, hence this extra complexity.
+    field(FLNK, "$(P)VOLTAGE:SP:RBV")
 }
 
 alias("$(P)SIM:VOLTAGE","$(P)SIM:VOLTAGE:SP")
@@ -246,6 +295,7 @@ record(bi, "$(P)SIM:OUTPUTMODE")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
+    field(FLNK, "$(P)OUTPUTMODE")
 }
 
 alias("$(P)SIM:OUTPUTMODE","$(P)SIM:OUTPUTMODE:SP")
@@ -256,6 +306,7 @@ record(bi, "$(P)SIM:OUTPUTSTATUS")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
+    field(FLNK, "$(P)OUTPUTSTATUS")
 }
 
 alias("$(P)SIM:OUTPUTSTATUS","$(P)SIM:OUTPUTSTATUS:SP")
