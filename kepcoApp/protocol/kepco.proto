@@ -33,6 +33,7 @@ readSetpointCurrent {
 
 writeCurrent 
 {
+    out "SYST:REM 1";
     out "CURR %f";
     
     # immediately update SP:RBV
@@ -55,6 +56,7 @@ readSetpointVoltage {
 
 writeVoltage
 {
+    out "SYST:REM 1";
     out "VOLT %f";
     
     # immediately update SP:RBV
@@ -72,6 +74,7 @@ readOutputMode
 
 setOutputMode
 {
+    out "SYST:REM 1";
     out "FUNC:MODE %{VOLT|CURR}";
     
     # Immediately update readback
@@ -89,6 +92,7 @@ readOutputStatus
 
 setOutputStatus
 {
+    out "SYST:REM 1";
     out "OUTP %{0|1}";
     
     # Immediately update readback
