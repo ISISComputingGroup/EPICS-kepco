@@ -33,6 +33,10 @@ readSetpointCurrent {
 
 writeCurrent 
 {
+    # Set into remote mode in order to communicate current
+    out "SYST:REM 1";
+
+    # Communicate current
     out "CURR %f";
     
     # immediately update SP:RBV
@@ -55,6 +59,10 @@ readSetpointVoltage {
 
 writeVoltage
 {
+    # Set into remote mode in order to communicate voltage
+    out "SYST:REM 1";
+
+    # Communicate voltage
     out "VOLT %f";
     
     # immediately update SP:RBV
@@ -72,6 +80,10 @@ readOutputMode
 
 setOutputMode
 {
+    # Set into remote mode in order to communicate output mode
+    out "SYST:REM 1";
+
+    # Communicate output mode
     out "FUNC:MODE %{VOLT|CURR}";
     
     # Immediately update readback
@@ -89,6 +101,10 @@ readOutputStatus
 
 setOutputStatus
 {
+    # Set into remote mode in order to communicate output status
+    out "SYST:REM 1";
+
+    # Communicate output status
     out "OUTP %{0|1}";
     
     # Immediately update readback
