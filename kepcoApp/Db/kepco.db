@@ -67,7 +67,7 @@ record(ai, "$(P)CURRENT")
     field(SIOL, "$(P)SIM:CURRENT")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
-    info(archive, "VAL")
+    info(archive, "5.0 VAL")
 }
 
 # Scan from here allows us to FLNK to readback if we need to trigger
@@ -91,7 +91,7 @@ record(ai, "$(P)CURRENT:SP:RBV")
     field(SIOL, "$(P)SIM:CURRENT:SP:RBV")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
-    info(archive, "VAL")
+    info(archive, "5.0 VAL")
 }
 
 record(ao, "$(P)CURRENT:SP") 
@@ -108,7 +108,7 @@ record(ao, "$(P)CURRENT:SP")
     field(SIOL, "$(P)SIM:CURRENT:SP PP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
-    info(archive, "VAL")
+    info(archive, "5.0 VAL")
 }
 
 record(ai, "$(P)VOLTAGE") 
@@ -123,7 +123,7 @@ record(ai, "$(P)VOLTAGE")
     field(SIOL, "$(P)SIM:VOLTAGE")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
-    info(archive, "VAL")
+    info(archive, "5.0 VAL")
 }
 
 # Scan from here allows us to FLNK to readback if we need to trigger
@@ -147,7 +147,7 @@ record(ai, "$(P)VOLTAGE:SP:RBV")
     field(SIOL, "$(P)SIM:VOLTAGE:SP:RBV")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
-    info(archive, "VAL")
+    info(archive, "5.0 VAL")
 }
 
 record(ao, "$(P)VOLTAGE:SP") 
@@ -164,7 +164,7 @@ record(ao, "$(P)VOLTAGE:SP")
     field(SIOL, "$(P)SIM:VOLTAGE:SP PP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
-    info(archive, "VAL")
+    info(archive, "5.0 VAL")
 }
 
 # Scan from here allows us to FLNK to readback if we need to trigger
