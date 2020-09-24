@@ -31,7 +31,7 @@ record(stringin, "$(P)IDN")
 
 record(stringin, "$(P)RST")
 {
-    field(DESC, "SCPI identification string")
+    field(DESC, "Reset the power supply")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto RST $(PORT)")
     field(PINI, "$(RESET=NO)")
@@ -40,9 +40,37 @@ record(stringin, "$(P)RST")
     field(SDIS, "$(P)DISABLE")
 } 
 
+# records to set the kepco into remote mode or reset on ioc start
+
+record(bi, "$(P)REM:AVAILABLE") {
+    field(DESC, "True if SYST:REM command available")
+    field(SCAN, "Passive")
+    field(ZNAM, "NO")
+    field(ONAM, "YES")
+    field(VAL, "1")
+    field(PINI, "YES")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:REM:AVAILABLE")
+    field(SDIS, "$(P)DISABLE")
+}
+
+record(bi, "$(P)REMOTE:GET") {
+    field(DESC, "Get if the unit is in remote mode")
+    field(SCAN, "Passive")
+    field(DTYP, "stream")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    field(OUT,  "@kepco.proto getRemote $(PORT)")
+    field(VAL, "0")
+    field(PINI, "$(P)REM:AVAILABLE")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:REMOTE:GET")
+    field(SDIS, "$(P)DISABLE")
+}
+
 record(bo, "$(P)REMOTE") 
 {
-    #Must be put into remote before PSU related commands sent
+    #Must be put into remote or reset before PSU related commands sent
     field(DESC, "Put the unit into remote mode")
     field(SCAN, "Passive")
     field(DTYP, "stream")
@@ -50,6 +78,8 @@ record(bo, "$(P)REMOTE")
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(VAL, "1")
+    field(PINI, "$(P)REM:AVAILABLE")
+    field(FLNK, "$(P)REMOTE:GET")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:REMOTE")
     field(SDIS, "$(P)DISABLE")
@@ -258,6 +288,12 @@ alias("$(P)SIM:CURRENT","$(P)SIM:CURRENT:SP")
 alias("$(P)SIM:CURRENT","$(P)SIM:CURRENT:SP:RBV")
 
 record(bo, "$(P)SIM:REMOTE")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "Soft Channel")
+}
+
+record(bi, "$(P)SIM:REMOTE:GET")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
