@@ -40,33 +40,33 @@ record(stringin, "$(P)RST")
     field(SDIS, "$(P)DISABLE")
 } 
 
-# records to set the kepco into remote mode or reset on ioc start
-
-record(bi, "$(P)REM:AVAILABLE") {
-    field(DESC, "True if SYST:REM command available")
-    field(SCAN, "Passive")
-    field(ZNAM, "NO")
-    field(ONAM, "YES")
-    field(VAL, "1")
-    field(PINI, "YES")
-    field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:REM:AVAILABLE")
-    field(SDIS, "$(P)DISABLE")
-}
-
-record(bi, "$(P)REMOTE:GET") {
-    field(DESC, "Get if the unit is in remote mode")
-    field(SCAN, "Passive")
+record(stringin, "$(P)RSTRSND") {
+    field(DESC, "Reset and resend params to power supply")
     field(DTYP, "stream")
-    field(ZNAM, "OFF")
-    field(ONAM, "ON")
-    field(OUT,  "@kepco.proto getRemote $(PORT)")
-    field(VAL, "0")
-    field(PINI, "$(P)REM:AVAILABLE")
+    field(INP, "@kepco.proto resetWait($(P)) $(PORT) ")
     field(SIML, "$(P)SIM")
-    field(SIOL, "$(P)SIM:REMOTE:GET")
+    field(SIOL, "$(P)SIM:RSTRSND")
     field(SDIS, "$(P)DISABLE")
 }
+
+record(calcout, "$(P)RSTRSND:ON_START") {
+    field(DESC, "Trigger RSTRSND on start")
+    field(PINI, "YES")
+    field(INPA, "$(ON_START)")
+    field(CALC, "A == 1")
+    field(OOPT, "When Non-zero")
+    field(OUT, "$(P)RSTRSND")
+}
+
+record(calcout, "$(P)REM:ON_START") {
+    field(DESC, "Trigger REMOTE on start")
+    field(PINI, "YES")
+    field(INPA, "$(ON_START)")
+    field(CALC, "A == 2")
+    field(OOPT, "When Non-zero")
+    field(OUT, "$(P)REMOTE")
+}
+
 
 record(bo, "$(P)REMOTE") 
 {
@@ -306,6 +306,12 @@ record(stringin, "$(P)SIM:IDN")
 }
 
 record(stringin, "$(P)SIM:RST")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "Soft Channel")
+}
+
+record(stringin, "$(P)SIM:RSTRSND")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")

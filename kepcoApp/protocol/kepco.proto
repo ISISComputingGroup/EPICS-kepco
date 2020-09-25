@@ -13,6 +13,15 @@ RST
     out "*RST";
 }
 
+resetWait {
+    out "*RST";
+    wait 100;
+    writeCurrent "%(\$1CURRENT:SP.VAL)";
+    writeVoltage "%(\$1VOLTAGE:SP.VAL)";
+    setOutputMode "%(\$1OUTPUTMODE:SP.VAL)";
+    setOutputStatus "%(\$1OUTPUTSTATUS:SP.VAL)";
+}
+
 setRemote
 {
     #Needs to be done first
