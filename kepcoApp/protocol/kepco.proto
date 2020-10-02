@@ -8,20 +8,6 @@ getIDN {
     ExtraInput = Ignore;
 }
 
-RST
-{
-    out "*RST";
-}
-
-resetWait {
-    out "*RST";
-    wait 100;
-    writeCurrent "%(\$1CURRENT:SP.VAL)";
-    writeVoltage "%(\$1VOLTAGE:SP.VAL)";
-    setOutputMode "%(\$1OUTPUTMODE:SP.VAL)";
-    setOutputStatus "%(\$1OUTPUTSTATUS:SP.VAL)";
-}
-
 setRemote
 {
     #Needs to be done first
@@ -46,8 +32,7 @@ readSetpointCurrent {
     ExtraInput = Ignore;
 }
 
-writeCurrent 
-{
+writeCurrent {
     # Set into remote mode in order to communicate current
     out "SYST:REM 1";
 
@@ -72,8 +57,7 @@ readSetpointVoltage {
     ExtraInput = Ignore;
 }
 
-writeVoltage
-{
+writeVoltage {
     # Set into remote mode in order to communicate voltage
     out "SYST:REM 1";
 
@@ -125,5 +109,46 @@ setOutputStatus
     # Immediately update readback
     out "OUTP?";
     in "%(\$1OUTPUTSTATUS)d";
+    ExtraInput = Ignore;
+}
+
+RST
+{
+    out "*RST";
+}
+
+resetWait {
+    # Reset 
+    RST;
+
+    # Wait for reset to complete
+    wait 100;
+
+    # Communicate voltage
+    out "VOLT %(\$1VOLTAGE:SP.VAL)f";
+    # immediately update SP:RBV
+    out "VOLT?";
+    in "%(\$1VOLTAGE:SP:RBV)f";
+    ExtraInput = Ignore;
+
+    # Communicate current
+    out "CURR %(\$1CURRENT:SP.VAL)f";
+    # immediately update SP:RBV
+    out "CURR?";
+    in "%(\$1CURRENT:SP:RBV)f";
+    ExtraInput = Ignore;
+
+    # Communicate output mode
+    out "FUNC:MODE %(\$1OUTPUTMODE:SP.VAL){VOLT|CURR}";
+    # Immediately update readback
+    out "FUNC:MODE?";
+    in "%(\$1OUTPUTMODE){VOLT|CURR}";
+    ExtraInput = Ignore;
+
+    # Communicate output status
+    out "OUTP %(\$1OUTPUTSTATUS:SP.VAL){0|1}";
+    # Immediately update readback
+    out "OUTP?";
+    in "%(\$1OUTPUTSTATUS){0|1}";
     ExtraInput = Ignore;
 }

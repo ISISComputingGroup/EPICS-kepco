@@ -55,7 +55,7 @@ record(calcout, "$(P)RSTRSND:ON_START") {
     field(INPA, "$(ON_START)")
     field(CALC, "A == 1")
     field(OOPT, "When Non-zero")
-    field(OUT, "$(P)RSTRSND")
+    field(OUT, "$(P)RSTRSND.PROC")
 }
 
 record(calcout, "$(P)REM:ON_START") {
@@ -64,7 +64,7 @@ record(calcout, "$(P)REM:ON_START") {
     field(INPA, "$(ON_START)")
     field(CALC, "A == 2")
     field(OOPT, "When Non-zero")
-    field(OUT, "$(P)REMOTE")
+    field(OUT, "$(P)REMOTE.PROC")
 }
 
 
@@ -78,8 +78,6 @@ record(bo, "$(P)REMOTE")
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(VAL, "1")
-    field(PINI, "$(P)REM:AVAILABLE")
-    field(FLNK, "$(P)REMOTE:GET")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:REMOTE")
     field(SDIS, "$(P)DISABLE")
@@ -139,6 +137,7 @@ record(ao, "$(P)CURRENT:SP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
+    info(autosaveFields, "VAL")
 }
 
 record(ai, "$(P)VOLTAGE") 
@@ -195,6 +194,7 @@ record(ao, "$(P)VOLTAGE:SP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
+    info(autosaveFields, "VAL")
 }
 
 # Scan from here allows us to FLNK to readback if we need to trigger
@@ -228,6 +228,7 @@ record(bo, "$(P)OUTPUTMODE:SP")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:OUTPUTMODE:SP PP")
     field(SDIS, "$(P)DISABLE")
+    info(autosaveFields, "VAL")
 }
 
 alias("$(P)OUTPUTMODE", "$(P)OUTPUTMODE:SP:RBV")
@@ -265,6 +266,7 @@ record(bo, "$(P)OUTPUTSTATUS:SP")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:OUTPUTSTATUS:SP PP")
     field(SDIS, "$(P)DISABLE")
+    info(autosaveFields, "VAL")
 }
 
 alias("$(P)OUTPUTSTATUS", "$(P)OUTPUTSTATUS:SP:RBV")
@@ -288,12 +290,6 @@ alias("$(P)SIM:CURRENT","$(P)SIM:CURRENT:SP")
 alias("$(P)SIM:CURRENT","$(P)SIM:CURRENT:SP:RBV")
 
 record(bo, "$(P)SIM:REMOTE")
-{
-    field(SCAN, "Passive")
-    field(DTYP, "Soft Channel")
-}
-
-record(bi, "$(P)SIM:REMOTE:GET")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
