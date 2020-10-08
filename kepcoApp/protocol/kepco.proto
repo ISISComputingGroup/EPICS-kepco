@@ -129,26 +129,22 @@ resetWait {
     # immediately update SP:RBV
     out "VOLT?";
     in "%(\$1VOLTAGE:SP:RBV)f";
-    ExtraInput = Ignore;
 
     # Communicate current
     out "CURR %(\$1CURRENT:SP.VAL)f";
     # immediately update SP:RBV
     out "CURR?";
     in "%(\$1CURRENT:SP:RBV)f";
-    ExtraInput = Ignore;
 
     # Communicate output mode
     out "FUNC:MODE %(\$1OUTPUTMODE:SP.VAL){VOLT|CURR}";
     # Immediately update readback
     out "FUNC:MODE?";
     in "%(\$1OUTPUTMODE){VOLT|CURR}";
-    ExtraInput = Ignore;
 
     # Communicate output status
     out "OUTP %(\$1OUTPUTSTATUS:SP.VAL){0|1}";
     # Immediately update readback
     out "OUTP?";
     in "%(\$1OUTPUTSTATUS){0|1}";
-    ExtraInput = Ignore;
 }
