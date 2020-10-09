@@ -62,8 +62,9 @@ record(stringin, "$(P)RSTRSND") {
 record(calcout, "$(P)RSTRSND:ON_START") {
     field(DESC, "Trigger RSTRSND on start")
     field(PINI, "YES")
-    field(INPA, "$(ON_START)")
-    field(CALC, "A == 1")
+    field(INPA, "$(ON_START=0)")
+    field(INPB, "$(P)FIRMWARE")
+    field(CALC, "(A == 0 && B <= 2.0) || A == 1")
     field(OOPT, "When Non-zero")
     field(OUT, "$(P)RSTRSND.PROC")
 }
@@ -71,8 +72,9 @@ record(calcout, "$(P)RSTRSND:ON_START") {
 record(calcout, "$(P)REM:ON_START") {
     field(DESC, "Trigger REMOTE on start")
     field(PINI, "YES")
-    field(INPA, "$(ON_START)")
-    field(CALC, "A == 2")
+    field(INPA, "$(ON_START=0)")
+    field(INPB, "$(P)FIRMWARE")
+    field(CALC, "(A == 0 && B > 2.0) || A == 2")
     field(OOPT, "When Non-zero")
     field(OUT, "$(P)REMOTE.PROC")
 }
