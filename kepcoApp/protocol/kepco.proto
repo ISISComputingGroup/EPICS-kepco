@@ -8,6 +8,15 @@ getIDN {
     ExtraInput = Ignore;
 }
 
+getFirmware {
+    out "*IDN?";
+    # Format: Manufacturer, Model, Serial Number, Main revision-Flash revision
+    # For example: KEPCO, BIT4886-6 200-20, A38621 11/10/98, 1.81-1.81.
+    # Regex gets everything after the last space, comma or dash
+    in "%*/(.*[, -])+/%f";
+    ExtraInput = Ignore;
+}
+
 setRemote
 {
     #Needs to be done first

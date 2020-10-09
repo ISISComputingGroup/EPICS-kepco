@@ -29,6 +29,16 @@ record(stringin, "$(P)IDN")
     field(SDIS, "$(P)DISABLE")
 }
 
+record(ai, "$(P)FIRMWARE") {
+    field(DESC, "The firmware version of the KEPCO")
+    field(DTYP, "stream")
+    field(INP,  "@kepco.proto getFirmware $(PORT)")
+    field(PINI, "YES")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:FIRMWARE")
+    field(SDIS, "$(P)DISABLE")
+}
+
 record(stringin, "$(P)RST")
 {
     field(DESC, "Reset the power supply")
@@ -296,6 +306,12 @@ record(bo, "$(P)SIM:REMOTE")
 }
 
 record(stringin, "$(P)SIM:IDN")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "Soft Channel")
+}
+
+record(stringin, "$(P)SIM:FIRMWARE")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
