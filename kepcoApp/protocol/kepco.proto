@@ -149,7 +149,7 @@ resetWait {
     out "FUNC:MODE %(\$1OUTPUTMODE:SP.VAL){VOLT|CURR}";
     # Immediately update readback
     out "FUNC:MODE?";
-    in "%(\$1OUTPUTMODE){VOLT|CURR}";
+    in "%(\$1OUTPUTMODE)d";
 
     # Communicate output status
     out "OUTP %(\$1OUTPUTSTATUS:SP.VAL){0|1}";
