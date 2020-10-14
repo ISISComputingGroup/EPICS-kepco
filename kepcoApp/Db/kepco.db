@@ -53,10 +53,19 @@ record(stringin, "$(P)RST")
 record(stringin, "$(P)RSTRSND") {
     field(DESC, "Reset and resend params to power supply")
     field(DTYP, "stream")
-    field(INP, "@kepco.proto resetWait($(P)) $(PORT) ")
+    field(INP, "@kepco.proto RST $(PORT)")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:RSTRSND")
     field(SDIS, "$(P)DISABLE")
+    field(FLNK, "$(P)RSND.PROC")
+}
+
+record(fanout, "$(P)RSND") {
+    field(LNK1, "$(P)CURRENT:SP.PROC")
+    field(LNK2, "$(P)VOLTAGE:SP.PROC")
+    field(LNK3, "$(P)OUTPUTSTATUS:SP.PROC")
+    field(LNK4, "$(P)OUTPUTMODE:SP.PROC")
+    field(SELM, "All")
 }
 
 record(calcout, "$(P)RSTRSND:ON_START") {
