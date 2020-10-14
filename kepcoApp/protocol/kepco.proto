@@ -125,3 +125,35 @@ RST
 {
     out "*RST";
 }
+
+resetWait {
+    # Reset 
+    RST;
+
+    # Wait for reset to complete
+    wait 100;
+
+    # Communicate voltage
+    out "VOLT %(\$1VOLTAGE:SP.VAL)f";
+    # immediately update SP:RBV
+    out "VOLT?";
+    in "%(\$1VOLTAGE:SP:RBV)f";
+
+    # Communicate current
+    out "CURR %(\$1CURRENT:SP.VAL)f";
+    # immediately update SP:RBV
+    out "CURR?";
+    in "%(\$1CURRENT:SP:RBV)f";
+
+    # Communicate output mode
+    out "FUNC:MODE %(\$1OUTPUTMODE:SP.VAL){VOLT|CURR}";
+    # Immediately update readback
+    out "FUNC:MODE?";
+    in "%(\$1OUTPUTMODE)d";
+
+    # Communicate output status
+    out "OUTP %(\$1OUTPUTSTATUS:SP.VAL){0|1}";
+    # Immediately update readback
+    out "OUTP?";
+    in "%(\$1OUTPUTSTATUS){0|1}";
+}
