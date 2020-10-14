@@ -23,12 +23,6 @@ setRemote
     out "SYST:REM %{0|1}";
 }
 
-getRemote
-{
-    out "SYST:REM?";
-    in "%{0|1}";
-}
-
 readActualCurrent {
     out "MEAS:CURR?";
     in "%f";
@@ -126,7 +120,7 @@ RST
     out "*RST";
 }
 
-resetWait {
+resetWaitResendSPs {
     # Reset 
     RST;
 

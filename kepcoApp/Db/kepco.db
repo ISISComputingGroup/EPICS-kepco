@@ -53,7 +53,7 @@ record(stringin, "$(P)RST")
 record(stringin, "$(P)RSTRSND") {
     field(DESC, "Reset and resend setpoints to kepco")
     field(DTYP, "stream")
-    field(INP, "@kepco.proto resetWait($(P)) $(PORT) ") # Reset and resend commands via proto so we can wait for reset to complete
+    field(INP, "@kepco.proto resetWaitResendSPs($(P)) $(PORT) ") # Reset and resend commands via proto so we can wait for reset to complete
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:RSTRSND")
     field(SDIS, "$(P)DISABLE")
