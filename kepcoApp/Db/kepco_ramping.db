@@ -9,7 +9,7 @@ record(ao, "$(P)RAMP:TARGET:SP")
     field(OUT, "@asyn($(READ),0,1)TGT")
 # I/O intr FLNK won't process until we trigger PROC via CA
     field(FLNK, "$(P)OUT_SP.PROC CA")
-    field(EGU, "K")
+    field(EGU, "A")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
 }
@@ -18,9 +18,11 @@ record(ao, "$(P)RAMP:TARGET:SP")
 record(ao, "$(P)RAMP:TARGET:SP:RBV")
 {
     field(DESC, "Current setpoint readback")
+    field(DOL, "$(P)CURRENT:SP:RBV CP")
+    field(OMSL, "closed_loop")
     field(DTYP, "asynFloat64")
     field(OUT, "@asyn($(READ),0,1)TGT:RBV")
-    field(EGU, "K")
+    field(EGU, "A")
     info(INTEREST, "MEDIUM")
     info(archive, "VAL")
 }
@@ -51,6 +53,8 @@ record(bi, "$(P)RAMPING")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(READ),0,1)CURRMP")
     field(SCAN, "I/O Intr")
+    field(ZNAM, "NO")
+    field(ONAM, "YES")
 }
 
 # This is the value that is being sent to the ReadASCII ramp to tell it at what temperature we currently are
@@ -61,7 +65,7 @@ record(ao, "$(P)CURRENT:RBV")
     field(OMSL, "closed_loop")
     field(DTYP, "asynFloat64")
     field(OUT, "@asyn($(READ),0,1)CUR")
-    field(EGU, "K")
+    field(EGU, "A")
 }
 
 record(bo, "$(P)RAMPON:SP")
