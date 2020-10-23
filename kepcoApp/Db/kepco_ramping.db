@@ -10,6 +10,7 @@ record(ao, "$(P)CURRENT:SP")
 # I/O intr FLNK won't process until we trigger PROC via CA
     field(FLNK, "$(P)OUT_SP.PROC CA")
     field(EGU, "A")
+    field(DRVH, $(CURRENT_MAX))
     info(INTEREST, "HIGH")
     info(archive, "VAL")
 }
@@ -23,6 +24,7 @@ record(ao, "$(P)CURRENT:SP:RBV")
     field(DTYP, "asynFloat64")
     field(OUT, "@asyn($(READ),0,1)TGT:RBV")
     field(EGU, "A")
+    field(PREC, "3")
     info(INTEREST, "MEDIUM")
     info(archive, "VAL")
 }
