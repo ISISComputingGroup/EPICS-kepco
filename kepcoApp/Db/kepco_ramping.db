@@ -27,24 +27,48 @@ record(ao, "$(P)RAMP:TARGET:SP:RBV")
     info(archive, "VAL")
 }
 
-record(ao, "$(P)RATE:SP")
+record(ao, "$(P)RAMP:RATE:SP")
 {
     field(DESC, "Rate the ramp increases/decreases")
     field(DTYP, "asynFloat64")
     field(OUT, "@asyn($(READ),0,1)RATE")
     field(EGU, "A/min")
+    field(DRVL, 0)
+    field(DRVH, 35)
+    info(autosaveFields, "VAL")
     info(INTEREST, "MEDIUM")
 }
 
-record(ai, "$(P)RATE")
+record(ai, "$(P)RAMP:RATE")
 {
     field(DESC, "Rate the ramp increases/decreases")
     field(DTYP, "asynFloat64")
     field(INP, "@asyn($(READ),0,1)RATE")
     field(EGU, "A/min")
     field(SCAN, "I/O Intr")
-	field(PREC, "2")
+    field(PREC, "2")
     info(INTEREST, "HIGH")
+}
+
+record(ao, "$(P)RAMP:STEPS:SP")
+{
+    field(DESC, "Times the current will change in a minute")
+    field(DTYP, "asynFloat64")
+    field(OUT, "@asyn($(READ),0,1)STPNUM")
+    field(EGU, "1/min")
+    field(VAL, 6)
+    field(DRVL, 0.01)
+    info(autosaveFields, "VAL")
+}
+
+record(ai, "$(P)RAMP:STEPS")
+{
+    field(DESC, "Times the current will change in a minute")
+    field(DTYP, "asynFloat64")
+    field(INP, "@asyn($(READ),0,1)STPNUM")
+    field(EGU, "1/min")
+    field(SCAN, "I/O Intr")
+    field(PREC, "2")
 }
 
 record(bi, "$(P)RAMPING")
@@ -57,10 +81,9 @@ record(bi, "$(P)RAMPING")
     field(ONAM, "YES")
 }
 
-# This is the value that is being sent to the ReadASCII ramp to tell it at what temperature we currently are
 record(ao, "$(P)CURRENT:RBV")
 {
-    field(DESC, "The current temperature of the sensor")
+    field(DESC, "The current RBV of the device")
     field(DOL, "$(P)CURRENT:SP:RBV CP")
     field(OMSL, "closed_loop")
     field(DTYP, "asynFloat64")
