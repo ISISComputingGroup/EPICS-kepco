@@ -127,6 +127,12 @@ resetWaitResendSPs {
     # Wait for reset to complete
     wait 100;
 
+    # Communicate output mode
+    out "FUNC:MODE %(\$1OUTPUTMODE:SP.VAL){VOLT|CURR}";
+    # Immediately update readback
+    out "FUNC:MODE?";
+    in "%(\$1OUTPUTMODE)d";
+
     # Communicate voltage
     out "VOLT %(\$1VOLTAGE:SP.VAL)f";
     # immediately update SP:RBV
@@ -138,12 +144,6 @@ resetWaitResendSPs {
     # immediately update SP:RBV
     out "CURR?";
     in "%(\$1CURRENT:SP:RBV)f";
-
-    # Communicate output mode
-    out "FUNC:MODE %(\$1OUTPUTMODE:SP.VAL){VOLT|CURR}";
-    # Immediately update readback
-    out "FUNC:MODE?";
-    in "%(\$1OUTPUTMODE)d";
 
     # Communicate output status
     out "OUTP %(\$1OUTPUTSTATUS:SP.VAL){0|1}";
