@@ -70,6 +70,8 @@ record(ai, "$(P)CURRENT")
     info(archive, "5.0 VAL")
 }
 
+alias("$(P)CURRENT","$(P)CURRENT:RBV")
+
 # Scan from here allows us to FLNK to readback if we need to trigger
 # an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
 # an update from the protocol file whenever a new SP is sent.
@@ -90,6 +92,7 @@ record(ai, "$(P)CURRENT:SP:RBV")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:CURRENT:SP:RBV")
     field(SDIS, "$(P)DISABLE")
+    field(FLNK, "$(P)FIELD:SP:RBV:CONV.PROC PP")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
 }
@@ -238,6 +241,22 @@ record(bo, "$(P)OUTPUTSTATUS:SP")
 }
 
 alias("$(P)OUTPUTSTATUS", "$(P)OUTPUTSTATUS:SP:RBV")
+
+record(ao, "$(P)FIELD:SP")
+{
+    field(DESC, "Field setpoint")
+    field(FLNK, "$(P)FIELD:SP:CONV.PROC PP")
+    field(EGU, "G")
+    info(INTEREST, "HIGH")
+    info(archive, "VAL")
+}
+
+record(ao, "$(P)FIELD:SP:RBV")
+{
+    field(DESC, "Field setpoint readback")
+    field(EGU, "G")
+    info(INTEREST, "MEDIUM")
+}
 
 ### SIMULATION RECORDS ###
 
