@@ -54,7 +54,7 @@ record(ai, "$(P)RAMP:RATE")
 
 record(ao, "$(P)RAMP:STEPS:SP")
 {
-    field(DESC, "Times the current will change in a minute")
+    field(DESC, "Set point for ramp steps in a min")
     field(DTYP, "asynFloat64")
     field(OUT, "@asyn($(READ),0,1)STPNUM")
     field(EGU, "1/min")
@@ -64,7 +64,7 @@ record(ao, "$(P)RAMP:STEPS:SP")
 
 record(ai, "$(P)RAMP:STEPS")
 {
-    field(DESC, "Times the current will change in a minute")
+    field(DESC, "Ramp steps in a minute")
     field(DTYP, "asynFloat64")
     field(INP, "@asyn($(READ),0,1)STPNUM")
     field(EGU, "1/min")
