@@ -29,20 +29,48 @@ record(stringin, "$(P)IDN")
     field(SDIS, "$(P)DISABLE")
 }
 
+record(ai, "$(P)FIRMWARE") {
+    field(DESC, "The firmware version of the KEPCO")
+    field(DTYP, "stream")
+    field(INP,  "@kepco.proto getFirmware $(PORT)")
+    field(PINI, "YES")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:FIRMWARE")
+    field(SDIS, "$(P)DISABLE")
+    field(FLNK, "$(P)RSTRSND:ON_START.PROC")
+}
+
 record(stringin, "$(P)RST")
 {
-    field(DESC, "SCPI identification string")
+    field(DESC, "Reset the power supply")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto RST $(PORT)")
-    field(PINI, "$(RESET=NO)")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:RST")
     field(SDIS, "$(P)DISABLE")
 } 
 
+record(stringin, "$(P)RSTRSND") {
+    field(DESC, "Reset and resend setpoints to kepco")
+    field(DTYP, "stream")
+    field(INP, "@kepco.proto resetWaitResendSPs($(P)) $(PORT) ") # Reset and resend commands via proto so we can wait for reset to complete
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:RSTRSND")
+    field(SDIS, "$(P)DISABLE")
+}
+
+record(calcout, "$(P)RSTRSND:ON_START") {
+    field(DESC, "Trigger RSTRSND on start")
+    field(INPA, "$(RESET_ON_START)")
+    field(INPB, "$(P)FIRMWARE")
+    field(CALC, "(A == 1 && B <= 2.0) || A == 2")
+    field(OOPT, "When Non-zero")
+    field(OUT, "$(P)RSTRSND.PROC")
+}
+
 record(bo, "$(P)REMOTE") 
 {
-    #Must be put into remote before PSU related commands sent
+    #Must be put into remote or reset before PSU related commands sent
     field(DESC, "Put the unit into remote mode")
     field(SCAN, "Passive")
     field(DTYP, "stream")
@@ -109,6 +137,7 @@ record(ao, "$(P)CURRENT:SP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
+    info(autosaveFields, "VAL")
 }
 
 record(ai, "$(P)VOLTAGE") 
@@ -165,6 +194,7 @@ record(ao, "$(P)VOLTAGE:SP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
+    info(autosaveFields, "VAL")
 }
 
 # Scan from here allows us to FLNK to readback if we need to trigger
@@ -198,6 +228,7 @@ record(bo, "$(P)OUTPUTMODE:SP")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:OUTPUTMODE:SP PP")
     field(SDIS, "$(P)DISABLE")
+    info(autosaveFields, "VAL")
 }
 
 alias("$(P)OUTPUTMODE", "$(P)OUTPUTMODE:SP:RBV")
@@ -235,6 +266,7 @@ record(bo, "$(P)OUTPUTSTATUS:SP")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:OUTPUTSTATUS:SP PP")
     field(SDIS, "$(P)DISABLE")
+    info(autosaveFields, "VAL")
 }
 
 alias("$(P)OUTPUTSTATUS", "$(P)OUTPUTSTATUS:SP:RBV")
@@ -269,7 +301,19 @@ record(stringin, "$(P)SIM:IDN")
     field(DTYP, "Soft Channel")
 }
 
+record(stringin, "$(P)SIM:FIRMWARE")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "Soft Channel")
+}
+
 record(stringin, "$(P)SIM:RST")
+{
+    field(SCAN, "Passive")
+    field(DTYP, "Soft Channel")
+}
+
+record(stringin, "$(P)SIM:RSTRSND")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
