@@ -58,7 +58,6 @@ record(ao, "$(P)RAMP:STEPS:SP")
     field(DTYP, "asynFloat64")
     field(OUT, "@asyn($(READ),0,1)STPNUM")
     field(EGU, "1/min")
-    field(VAL, "$(STEPS_NUM)")
     field(DRVL, 0.01)
 }
 
