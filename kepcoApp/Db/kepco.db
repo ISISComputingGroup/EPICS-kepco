@@ -91,6 +91,7 @@ record(ai, "$(P)CURRENT")
     field(INP,  "@kepco.proto readActualCurrent $(PORT)")
     field(PREC, "3")
     field(EGU,  "A")
+    field(HOPR, $(CURRENT_MAX=0))
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:CURRENT")
     field(SDIS, "$(P)DISABLE")
@@ -104,10 +105,12 @@ record(ai, "$(P)CURRENT")
 record(bo, "$(P)CURRENT:SP:RBV:_SCAN") 
 {
     field(SCAN, "1 second")
-    field(FLNK, "$(P)CURRENT:SP:RBV")
+    field(FLNK, "$(P)_CURRENT:SP:RBV")
 }
 
-record(ai, "$(P)CURRENT:SP:RBV") 
+# These current PVs communicate with the device but are not read/set by the user directly, instead control is done 
+# through the ramping PVs, which decide what to forward to the hardware
+record(ai, "$(P)_CURRENT:SP:RBV") 
 {
     field(DESC, "Current Setpoint Readback")
     field(SCAN, "Passive")
@@ -122,7 +125,7 @@ record(ai, "$(P)CURRENT:SP:RBV")
     info(archive, "5.0 VAL")
 }
 
-record(ao, "$(P)CURRENT:SP") 
+record(ao, "$(P)_CURRENT:SP") 
 {
     field(DESC, "Current Setpoint")
     field(SCAN, "Passive")
@@ -282,7 +285,7 @@ record(ai, "$(P)SIM:CURRENT")
     # This FLNK approximates this behaviour in recsim mode.
     # The muon ZF system requires fairly quick updates of setpoint readbacks after setting
     # setpoints, hence this extra complexity.
-    field(FLNK, "$(P)CURRENT:SP:RBV")
+    field(FLNK, "$(P)_CURRENT:SP:RBV")
 }
 
 alias("$(P)SIM:CURRENT","$(P)SIM:CURRENT:SP")
