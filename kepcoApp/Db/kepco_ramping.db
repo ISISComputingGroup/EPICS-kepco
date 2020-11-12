@@ -1,0 +1,129 @@
+#ReadASCII
+###################
+
+# This set point is passed to the ReadASCII ramp, which decides what value to pass on to the device.
+record(ao, "$(P)CURRENT:SP")
+{
+    field(DESC, "Current setpoint")
+    field(DTYP, "asynFloat64")
+    field(OUT, "@asyn($(READ),0,1)TGT")
+# I/O intr FLNK won't process until we trigger PROC via CA
+    field(FLNK, "$(P)OUT_SP.PROC CA")
+    field(EGU, "A")
+    field(DRVH, $(CURRENT_MAX))
+    info(INTEREST, "HIGH")
+    info(archive, "VAL")
+}
+
+# This set point is read back from the ReadASCII ramp to say where it is ramping to
+record(ao, "$(P)CURRENT:SP:RBV")
+{
+    field(DESC, "Current setpoint readback")
+    field(DOL, "$(P)_CURRENT:SP:RBV CP")
+    field(OMSL, "closed_loop")
+    field(DTYP, "asynFloat64")
+    field(OUT, "@asyn($(READ),0,1)TGT:RBV")
+    field(EGU, "A")
+    field(PREC, "3")
+    info(INTEREST, "MEDIUM")
+    info(archive, "VAL")
+}
+
+record(ao, "$(P)RAMP:RATE:SP")
+{
+    field(DESC, "Rate the ramp increases/decreases")
+    field(DTYP, "asynFloat64")
+    field(OUT, "@asyn($(READ),0,1)RATE")
+    field(EGU, "A/min")
+    field(DRVL, 0)
+    field(DRVH, 35)
+    info(autosaveFields, "VAL")
+    info(INTEREST, "MEDIUM")
+}
+
+record(ai, "$(P)RAMP:RATE")
+{
+    field(DESC, "Rate the ramp increases/decreases")
+    field(DTYP, "asynFloat64")
+    field(INP, "@asyn($(READ),0,1)RATE")
+    field(EGU, "A/min")
+    field(SCAN, "I/O Intr")
+    field(PREC, "2")
+    info(INTEREST, "HIGH")
+}
+
+record(ao, "$(P)RAMP:STEPS:SP")
+{
+    field(DESC, "Set point for ramp steps in a min")
+    field(DTYP, "asynFloat64")
+    field(OUT, "@asyn($(READ),0,1)STPNUM")
+    field(EGU, "1/min")
+    field(DRVL, 0.01)
+}
+
+record(ai, "$(P)RAMP:STEPS")
+{
+    field(DESC, "Ramp steps in a minute")
+    field(DTYP, "asynFloat64")
+    field(INP, "@asyn($(READ),0,1)STPNUM")
+    field(EGU, "1/min")
+    field(SCAN, "I/O Intr")
+    field(PREC, "2")
+}
+
+record(bi, "$(P)RAMPING")
+{
+    field(DESC, "High if ramp is executing")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(READ),0,1)CURRMP")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "NO")
+    field(ONAM, "YES")
+}
+
+record(ao, "$(P)CURRENT:RBV")
+{
+    field(DESC, "The current RBV of the device")
+    field(DOL, "$(P)_CURRENT:SP:RBV CP")
+    field(OMSL, "closed_loop")
+    field(DTYP, "asynFloat64")
+    field(OUT, "@asyn($(READ),0,1)CUR")
+    field(EGU, "A")
+}
+
+record(bo, "$(P)RAMPON:SP")
+{
+    field(DESC, "Toggles the SP ramp")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(READ),0,1)RMP")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+}
+
+record(bi, "$(P)RAMPON")
+{
+    field(DESC, "Toggles the SP ramp")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(READ),0,1)RMP")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+}
+
+record(ai, "$(P)OUT_SP")
+{
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(READ),0,1)SP")
+    field(PREC, "5")
+    field(SCAN, "I/O Intr")
+    field(FLNK, "$(P)RAMP_SP.PROC PP")
+}
+
+record(ao, "$(P)RAMP_SP")
+{
+    field(DTYP, "Soft Channel")
+    field(DOL, "$(P)OUT_SP")
+    field(OMSL, "closed_loop")
+    field(OIF, "Full")
+    field(OUT, "$(P)_CURRENT:SP PP")
+}
