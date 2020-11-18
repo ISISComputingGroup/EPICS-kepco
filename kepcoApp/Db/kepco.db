@@ -99,8 +99,6 @@ record(ai, "$(P)CURRENT")
     info(archive, "5.0 VAL")
 }
 
-alias("$(P)CURRENT","$(P)CURRENT:RBV")
-
 # Scan from here allows us to FLNK to readback if we need to trigger
 # an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
 # an update from the protocol file whenever a new SP is sent.
