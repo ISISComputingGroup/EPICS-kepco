@@ -140,7 +140,6 @@ record(ao, "$(P)_CURRENT:SP")
     field(SDIS, "$(P)DISABLE")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
-    info(autosaveFields, "VAL")
 }
 
 record(ai, "$(P)VOLTAGE") 
