@@ -121,6 +121,7 @@ record(ai, "$(P)_CURRENT:SP:RBV")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:CURRENT:SP:RBV")
     field(SDIS, "$(P)DISABLE")
+    field(FLNK, "$(P)FIELD:SP:RBV:CONV.PROC PP")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
 }
@@ -272,6 +273,22 @@ record(bo, "$(P)OUTPUTSTATUS:SP")
 }
 
 alias("$(P)OUTPUTSTATUS", "$(P)OUTPUTSTATUS:SP:RBV")
+
+record(ao, "$(P)FIELD:SP")
+{
+    field(DESC, "Field setpoint")
+    field(FLNK, "$(P)FIELD:SP:CONV.PROC PP")
+    field(EGU, "G")
+    info(INTEREST, "HIGH")
+    info(archive, "VAL")
+}
+
+record(ao, "$(P)FIELD:SP:RBV")
+{
+    field(DESC, "Field setpoint readback")
+    field(EGU, "G")
+    info(INTEREST, "MEDIUM")
+}
 
 ### SIMULATION RECORDS ###
 

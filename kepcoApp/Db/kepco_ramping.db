@@ -85,7 +85,7 @@ record(bi, "$(P)RAMPING")
 record(ao, "$(P)CURRENT:RBV")
 {
     field(DESC, "The current RBV of the device")
-    field(DOL, "$(P)_CURRENT:SP:RBV CP MSS")
+    field(DOL, "$(P)CURRENT CP MSS")
     field(OMSL, "closed_loop")
     field(DTYP, "asynFloat64")
     field(OUT, "@asyn($(READ),0,1)CUR")
