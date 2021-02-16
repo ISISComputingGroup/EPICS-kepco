@@ -44,7 +44,7 @@ writeCurrent {
     
     # immediately update SP:RBV
     out "CURR?";
-    in "%(\$1CURRENT:SP:RBV)f";
+    in "%(\$1_CURRENT:SP:RBV)f";
     ExtraInput = Ignore;
 }
 
