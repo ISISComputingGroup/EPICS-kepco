@@ -12,6 +12,7 @@ record(ao, "$(P)CURRENT:SP")
     field(DRVL, "-$(CURRENT_MAX)")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
+    field(PINI, "$(AUTOSAVE_CURRENT)")
     info(autosaveFields, "VAL")
 }
 
