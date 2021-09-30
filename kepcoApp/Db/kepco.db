@@ -99,21 +99,12 @@ record(ai, "$(P)CURRENT")
     info(archive, "5.0 VAL")
 }
 
-# Scan from here allows us to FLNK to readback if we need to trigger
-# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
-# an update from the protocol file whenever a new SP is sent.
-record(bo, "$(P)CURRENT:SP:RBV:_SCAN") 
-{
-    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
-    field(FLNK, "$(P)_CURRENT:SP:RBV")
-}
-
 # These current PVs communicate with the device but are not read/set by the user directly, instead control is done 
 # through the ramping PVs, which decide what to forward to the hardware
 record(ai, "$(P)_CURRENT:SP:RBV") 
 {
     field(DESC, "Current Setpoint Readback")
-    field(SCAN, "Passive")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readSetpointCurrent $(PORT)")
     field(PREC, "3")
@@ -158,19 +149,10 @@ record(ai, "$(P)VOLTAGE")
     info(archive, "5.0 VAL")
 }
 
-# Scan from here allows us to FLNK to readback if we need to trigger
-# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
-# an update from the protocol file whenever a new SP is sent.
-record(bo, "$(P)VOLTAGE:SP:RBV:_SCAN") 
-{
-    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
-    field(FLNK, "$(P)VOLTAGE:SP:RBV")
-}
-
 record(ai, "$(P)VOLTAGE:SP:RBV") 
 {
     field(DESC, "Voltage setpoint readback")
-    field(SCAN, "Passive")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readSetpointVoltage $(PORT)")
     field(PREC, "3")
@@ -200,18 +182,9 @@ record(ao, "$(P)VOLTAGE:SP")
     info(autosaveFields, "VAL")
 }
 
-# Scan from here allows us to FLNK to readback if we need to trigger
-# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
-# an update from the protocol file whenever a new SP is sent.
-record(bo, "$(P)OUTPUTMODE:_SCAN") 
-{
-    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
-    field(FLNK, "$(P)OUTPUTMODE")
-}
-
 record(bi, "$(P)OUTPUTMODE") 
 {
-    field(SCAN, "Passive")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readOutputMode $(PORT)")
     field(ZNAM, "VOLTAGE")
@@ -236,19 +209,9 @@ record(bo, "$(P)OUTPUTMODE:SP")
 
 alias("$(P)OUTPUTMODE", "$(P)OUTPUTMODE:SP:RBV")
 
-
-# Scan from here allows us to FLNK to readback if we need to trigger
-# an extra update. These extra updates are only triggered in recsim mode - in normal mode we push
-# an update from the protocol file whenever a new SP is sent.
-record(bo, "$(P)OUTPUTSTATUS:_SCAN") 
-{
-    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
-    field(FLNK, "$(P)OUTPUTSTATUS")
-}
-
 record(bi, "$(P)OUTPUTSTATUS") 
 {
-    field(SCAN, "Passive")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readOutputStatus $(PORT)")
     field(ZNAM, "OFF")
@@ -384,7 +347,7 @@ record(seq, "$(P)_SCAN_LOOP") {
 
     field(DOL0, "1")
     field(DLY0, "0")
-    field(LNK0, "$(P)CURRENT:SP:RBV:_SCAN.PROC")
+    field(LNK0, "$(P)_CURRENT:SP:RBV.PROC")
 
     field(DOL1, "1")
     field(DLY1, "0.1")
@@ -396,13 +359,13 @@ record(seq, "$(P)_SCAN_LOOP") {
 
     field(DOL3, "1")
     field(DLY3, "0.1")
-    field(LNK3, "$(P)VOLTAGE:SP:RBV:_SCAN.PROC")
+    field(LNK3, "$(P)VOLTAGE:SP:RBV.PROC")
 
     field(DOL4, "1")
     field(DLY4, "0.1")
-    field(LNK4, "$(P)OUTPUTMODE:_SCAN.PROC")
+    field(LNK4, "$(P)OUTPUTMODE.PROC")
 
     field(DOL5, "1")
     field(DLY5, "0.1")
-    field(LNK5, "$(P)OUTPUTSTATUS:_SCAN.PROC")
+    field(LNK5, "$(P)OUTPUTSTATUS.PROC")
 }
