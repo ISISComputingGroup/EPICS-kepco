@@ -391,18 +391,18 @@ record(seq, "$(P)_SCAN_LOOP") {
     field(LNK1, "$(P)CURRENT.PROC")
 
     field(DOL2, "1")
-    field(DLY2, "0.2")
+    field(DLY2, "0.1")
     field(LNK2, "$(P)VOLTAGE.PROC")
 
     field(DOL3, "1")
-    field(DLY3, "0.3")
+    field(DLY3, "0.1")
     field(LNK3, "$(P)VOLTAGE:SP:RBV:_SCAN.PROC")
 
     field(DOL4, "1")
-    field(DLY4, "0.4")
+    field(DLY4, "0.1")
     field(LNK4, "$(P)OUTPUTMODE:_SCAN.PROC")
 
     field(DOL5, "1")
-    field(DLY5, "0.5")
+    field(DLY5, "0.1")
     field(LNK5, "$(P)OUTPUTSTATUS:_SCAN.PROC")
 }
