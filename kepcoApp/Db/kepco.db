@@ -86,7 +86,7 @@ record(bo, "$(P)REMOTE")
 record(ai, "$(P)CURRENT") 
 {
     field(DESC, "Current")
-    field(SCAN, "1 second")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readActualCurrent $(PORT)")
     field(PREC, "3")
@@ -104,7 +104,7 @@ record(ai, "$(P)CURRENT")
 # an update from the protocol file whenever a new SP is sent.
 record(bo, "$(P)CURRENT:SP:RBV:_SCAN") 
 {
-    field(SCAN, "1 second")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(FLNK, "$(P)_CURRENT:SP:RBV")
 }
 
@@ -146,7 +146,7 @@ record(ao, "$(P)_CURRENT:SP")
 record(ai, "$(P)VOLTAGE") 
 {
     field(DESC, "Voltage")
-    field(SCAN, "1 second")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(DTYP, "stream")
     field(INP,  "@kepco.proto readActualVoltage $(PORT)")
     field(PREC, "3")
@@ -163,7 +163,7 @@ record(ai, "$(P)VOLTAGE")
 # an update from the protocol file whenever a new SP is sent.
 record(bo, "$(P)VOLTAGE:SP:RBV:_SCAN") 
 {
-    field(SCAN, "1 second")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(FLNK, "$(P)VOLTAGE:SP:RBV")
 }
 
@@ -205,7 +205,7 @@ record(ao, "$(P)VOLTAGE:SP")
 # an update from the protocol file whenever a new SP is sent.
 record(bo, "$(P)OUTPUTMODE:_SCAN") 
 {
-    field(SCAN, "1 second")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(FLNK, "$(P)OUTPUTMODE")
 }
 
@@ -242,7 +242,7 @@ alias("$(P)OUTPUTMODE", "$(P)OUTPUTMODE:SP:RBV")
 # an update from the protocol file whenever a new SP is sent.
 record(bo, "$(P)OUTPUTSTATUS:_SCAN") 
 {
-    field(SCAN, "1 second")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
     field(FLNK, "$(P)OUTPUTSTATUS")
 }
 
@@ -376,3 +376,33 @@ alias("$(P)SIM:OUTPUTSTATUS","$(P)SIM:OUTPUTSTATUS:SP")
 
 alias("$(P)SIM:OUTPUTSTATUS","$(P)SIM:OUTPUTSTATUS:SP:RBV")
 
+record(seq, "$(P)_SCAN_LOOP") {
+    field(DESC, "Control scans")
+    field(SELM, "All")
+    field(SELN, "1")
+    field(SCAN, "1 second")
+
+    field(DOL0, "1")
+    field(DLY0, "0")
+    field(LNK0, "$(P)CURRENT:SP:RBV:_SCAN.PROC")
+
+    field(DOL1, "1")
+    field(DLY1, "0.1")
+    field(LNK1, "$(P)CURRENT.PROC")
+
+    field(DOL2, "1")
+    field(DLY2, "0.2")
+    field(LNK2, "$(P)VOLTAGE.PROC")
+
+    field(DOL3, "1")
+    field(DLY3, "0.3")
+    field(LNK3, "$(P)VOLTAGE:SP:RBV:_SCAN.PROC")
+
+    field(DOL4, "1")
+    field(DLY4, "0.4")
+    field(LNK4, "$(P)OUTPUTMODE:_SCAN.PROC")
+
+    field(DOL5, "1")
+    field(DLY5, "0.5")
+    field(LNK5, "$(P)OUTPUTSTATUS:_SCAN.PROC")
+}
