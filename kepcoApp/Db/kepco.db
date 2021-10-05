@@ -253,6 +253,14 @@ record(ao, "$(P)FIELD:SP:RBV")
     info(INTEREST, "MEDIUM")
 }
 
+record(longin, "$(P)CURRENT:RANGE") {
+    field(DESC, "The programmed current range")
+    field(EGU, "")
+    field(INP, "@kepco.proto readCurrentRange($(P)) $(PORT)")
+    field(DTYP, "stream")
+    field(SCAN, "Passive")
+}
+
 ### SIMULATION RECORDS ###
 
 record(ai, "$(P)SIM:CURRENT")
@@ -368,4 +376,8 @@ record(seq, "$(P)_SCAN_LOOP") {
     field(DOL5, "1")
     field(DLY5, "0.1")
     field(LNK5, "$(P)OUTPUTSTATUS.PROC")
+
+    field(DOL5, "1")
+    field(DLY5, "0.1")
+    field(LNK5, "$(P)CURRENT:RANGE.PROC")
 }

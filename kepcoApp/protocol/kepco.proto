@@ -151,3 +151,9 @@ resetWaitResendSPs {
     out "OUTP?";
     in "%(\$1OUTPUTSTATUS){0|1}";
 }
+
+readCurrentRange {
+    out "CURR:RANG?";
+    in "%d";
+    ExtraInput = Ignore;
+}
