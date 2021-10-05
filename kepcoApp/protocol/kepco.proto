@@ -157,3 +157,12 @@ readCurrentRange {
     in "%d";
     ExtraInput = Ignore;
 }
+
+setCurrentRange {
+    out "CURR:RANG %d";
+
+    # Immediately update readback
+    out "CURR:RANG?";
+    in "%(\$1CURRENT:RANGE)d";
+    ExtraInput = Ignore;
+}

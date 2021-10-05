@@ -253,10 +253,22 @@ record(ao, "$(P)FIELD:SP:RBV")
     info(INTEREST, "MEDIUM")
 }
 
-record(longin, "$(P)CURRENT:RANGE") {
+record(mbbi, "$(P)CURRENT:RANGE") {
     field(DESC, "The programmed current range")
-    field(EGU, "")
     field(INP, "@kepco.proto readCurrentRange($(P)) $(PORT)")
+    field(DTYP, "stream")
+    field(SCAN, "Passive")
+
+    field(ONST, "FULL")         field(ONVL, "1")
+    field(FRST, "QUARTER")        field(FRVL, "4")
+}
+
+record(mbbo, "$(P)CURRENT:RANGE:SP") {
+    field(DESC, "The current range setpoint")
+    field(OUT,  "output_link")
+    field(ONST, "FULL")         field(ONVL, "1")
+    field(FRST, "QUARTER")        field(FRVL, "4")
+    field(OUT, "@kepco.proto setCurrentRange($(P)) $(PORT)")
     field(DTYP, "stream")
     field(SCAN, "Passive")
 }
