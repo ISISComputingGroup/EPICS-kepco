@@ -389,7 +389,7 @@ record(seq, "$(P)_SCAN_LOOP") {
     field(DLY5, "0.1")
     field(LNK5, "$(P)OUTPUTSTATUS.PROC")
 
-    field(DOL5, "1")
-    field(DLY5, "0.1")
-    field(LNK5, "$(P)CURRENT:RANGE.PROC")
+    field(DOL6, "1")
+    field(DLY6, "0.1")
+    field(LNK6, "$(P)CURRENT:RANGE.PROC")
 }
