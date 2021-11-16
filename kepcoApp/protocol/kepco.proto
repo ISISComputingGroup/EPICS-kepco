@@ -41,11 +41,6 @@ writeCurrent {
 
     # Communicate current
     out "CURR %f";
-    
-    # immediately update SP:RBV
-    out "CURR?";
-    in "%(\$1_CURRENT:SP:RBV)f";
-    ExtraInput = Ignore;
 }
 
 readActualVoltage {
@@ -66,11 +61,6 @@ writeVoltage {
 
     # Communicate voltage
     out "VOLT %f";
-    
-    # immediately update SP:RBV
-    out "VOLT?";
-    in "%(\$1VOLTAGE:SP:RBV)f";
-    ExtraInput = Ignore;
 }
 
 readOutputMode
@@ -87,11 +77,6 @@ setOutputMode
 
     # Communicate output mode
     out "FUNC:MODE %{VOLT|CURR}";
-    
-    # Immediately update readback
-    out "FUNC:MODE?";
-    in "%(\$1OUTPUTMODE)d";
-    ExtraInput = Ignore;
 }
 
 readOutputStatus
@@ -108,11 +93,6 @@ setOutputStatus
 
     # Communicate output status
     out "OUTP %{0|1}";
-    
-    # Immediately update readback
-    out "OUTP?";
-    in "%(\$1OUTPUTSTATUS)d";
-    ExtraInput = Ignore;
 }
 
 RST
@@ -150,19 +130,4 @@ resetWaitResendSPs {
     # Immediately update readback
     out "OUTP?";
     in "%(\$1OUTPUTSTATUS){0|1}";
-}
-
-readCurrentRange {
-    out "CURR:RANG?";
-    in "%d";
-    ExtraInput = Ignore;
-}
-
-setCurrentRange {
-    out "CURR:RANG %d";
-
-    # Immediately update readback
-    out "CURR:RANG?";
-    in "%(\$1CURRENT:RANGE)d";
-    ExtraInput = Ignore;
 }
