@@ -192,6 +192,7 @@ record(bi, "$(P)OUTPUTMODE")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:OUTPUTMODE")
     field(SDIS, "$(P)DISABLE")
+    info(archive, "5.0 VAL")
 }
 
 record(bo, "$(P)OUTPUTMODE:SP") 
@@ -220,6 +221,7 @@ record(bi, "$(P)OUTPUTSTATUS")
     field(SIOL, "$(P)SIM:OUTPUTSTATUS")
     field(SDIS, "$(P)DISABLE")
     info(alarm, "KEPCO")
+    info(archive, "5.0 VAL")
 }
 
 record(bo, "$(P)OUTPUTSTATUS:SP") 
