@@ -77,7 +77,6 @@ setOutputMode
 
     # Communicate output mode
     out "FUNC:MODE %{VOLT|CURR}";
-	@init { readOutputMode; }
 }
 
 readOutputStatus

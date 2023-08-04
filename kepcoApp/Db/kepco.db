@@ -115,6 +115,7 @@ record(mbbi, "$(P)CURRENT:RANGE")
     field(SCAN, "Passive") # Scanned by _SCAN_LOOP
 }
 
+# not autosaved as set by macro from RANGE:INIT 
 record(mbbo, "$(P)CURRENT:RANGE:SP")
 {
     field(ZRST, "Full")
@@ -262,6 +263,7 @@ record(mbbi, "$(P)VOLTAGE:RANGE")
     field(SDIS, "$(P)DISABLE")
 }
 
+# not autosaved as set by macro from RANGE:INIT 
 record(mbbo, "$(P)VOLTAGE:RANGE:SP")
 {
     field(ZRST, "Full")
