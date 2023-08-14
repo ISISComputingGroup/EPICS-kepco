@@ -99,6 +99,71 @@ record(ai, "$(P)CURRENT")
     info(archive, "5.0 VAL")
 }
 
+record(mbbi, "$(P)CURRENT:RANGE")
+{
+    field(DESC, "Current Range")
+    field(ZRST, "Full")
+    field(ONST, "Quarter")
+	field(ZRVL, "1")
+	field(ONVL, "4")
+    field(DTYP, "stream")
+    field(INP,  "@kepco.proto getCurrentRange $(PORT)")
+    info(archive, "VAL")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:CURRENT:RANGE")
+    field(SDIS, "$(P)DISABLE")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
+}
+
+# not autosaved as set by macro from RANGE:INIT 
+record(mbbo, "$(P)CURRENT:RANGE:SP")
+{
+    field(ZRST, "Full")
+    field(ONST, "Quarter")
+    field(TWST, "Auto")
+	field(FLNK, "$(P)CURRENT:RANGE:SP:SEQ.PROC")
+    info(archive, "VAL")
+}
+
+record(seq, "$(P)CURRENT:RANGE:SP:SEQ")
+{
+    field(SELM, "Specified")
+	field(SELL, "$(P)CURRENT:RANGE:SP")
+	field(DOL1, "1")
+	field(DOL2, "4")
+	field(DOL3, "1")
+	field(SHFT, "0")
+	field(OFFS, "1")
+    field(LNK1, "$(P)CURRENT:RANGE:SP_ PP")
+    field(LNK2, "$(P)CURRENT:RANGE:SP_ PP")
+    field(LNK3, "$(P)CURRENT:RANGE:AUTO:SP_ PP")
+}
+
+record(longout, "$(P)CURRENT:RANGE:SP_")
+{
+    field(DTYP, "stream")
+    field(OUT,  "@kepco.proto setCurrentRange $(PORT)")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:CURRENT:RANGE.RVAL PP")
+    field(SDIS, "$(P)DISABLE")
+}
+
+record(longout, "$(P)CURRENT:RANGE:AUTO:SP_")
+{
+    field(DTYP, "stream")
+    field(OUT,  "@kepco.proto setAutoCurrentRange $(PORT)")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:CURRENT:RANGE:AUTO PP")
+    field(SDIS, "$(P)DISABLE")
+}
+
+record(stringout, "$(P)CURRENT:RANGE:INIT")
+{
+    field(VAL, "$(CURRENT_RANGE=Auto)")
+	field(OUT, "$(P)CURRENT:RANGE:SP PP")
+	field(PINI, "YES")
+}
+
 # These current PVs communicate with the device but are not read/set by the user directly, instead control is done 
 # through the ramping PVs, which decide what to forward to the hardware
 record(ai, "$(P)_CURRENT:SP:RBV") 
@@ -180,6 +245,71 @@ record(ao, "$(P)VOLTAGE:SP")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
     info(autosaveFields, "VAL")
+}
+
+record(mbbi, "$(P)VOLTAGE:RANGE")
+{
+    field(DESC, "Voltage Range")
+    field(ZRST, "Full")
+    field(ONST, "Quarter")
+	field(ZRVL, "1")
+	field(ONVL, "4")
+    field(DTYP, "stream")
+    field(INP,  "@kepco.proto getVoltageRange $(PORT)")
+    info(archive, "VAL")
+    field(SCAN, "Passive") # Scanned by _SCAN_LOOP
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:VOLTAGE:RANGE")
+    field(SDIS, "$(P)DISABLE")
+}
+
+# not autosaved as set by macro from RANGE:INIT 
+record(mbbo, "$(P)VOLTAGE:RANGE:SP")
+{
+    field(ZRST, "Full")
+    field(ONST, "Quarter")
+    field(TWST, "Auto")
+	field(FLNK, "$(P)VOLTAGE:RANGE:SP:SEQ.PROC")
+    info(archive, "VAL")
+}
+
+record(seq, "$(P)VOLTAGE:RANGE:SP:SEQ")
+{
+    field(SELM, "Specified")
+	field(SELL, "$(P)VOLTAGE:RANGE:SP")
+	field(DOL1, "1")
+	field(DOL2, "4")
+	field(DOL3, "1")
+	field(SHFT, "0")
+	field(OFFS, "1")
+    field(LNK1, "$(P)VOLTAGE:RANGE:SP_ PP")
+    field(LNK2, "$(P)VOLTAGE:RANGE:SP_ PP")
+    field(LNK3, "$(P)VOLTAGE:RANGE:AUTO:SP_ PP")
+}
+
+record(longout, "$(P)VOLTAGE:RANGE:SP_")
+{
+    field(DTYP, "stream")
+    field(OUT,  "@kepco.proto setVoltageRange $(PORT)")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:VOLTAGE:RANGE.RVAL PP")
+    field(SDIS, "$(P)DISABLE")
+}
+
+record(longout, "$(P)VOLTAGE:RANGE:AUTO:SP_")
+{
+    field(DTYP, "stream")
+    field(OUT,  "@kepco.proto setAutoVoltageRange $(PORT)")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:VOLTAGE:RANGE:AUTO PP")
+    field(SDIS, "$(P)DISABLE")
+}
+
+record(stringout, "$(P)VOLTAGE:RANGE:INIT")
+{
+    field(VAL, "$(VOLTAGE_RANGE=Auto)")
+	field(OUT, "$(P)VOLTAGE:RANGE:SP PP")
+	field(PINI, "YES")
 }
 
 record(bi, "$(P)OUTPUTMODE") 
@@ -323,7 +453,6 @@ record(bi, "$(P)SIM:OUTPUTMODE")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
-    field(FLNK, "$(P)OUTPUTMODE")
 }
 
 alias("$(P)SIM:OUTPUTMODE","$(P)SIM:OUTPUTMODE:SP")
@@ -334,7 +463,6 @@ record(bi, "$(P)SIM:OUTPUTSTATUS")
 {
     field(SCAN, "Passive")
     field(DTYP, "Soft Channel")
-    field(FLNK, "$(P)OUTPUTSTATUS")
 }
 
 alias("$(P)SIM:OUTPUTSTATUS","$(P)SIM:OUTPUTSTATUS:SP")
@@ -370,4 +498,39 @@ record(seq, "$(P)_SCAN_LOOP") {
     field(DOL5, "1")
     field(DLY5, "0.05")
     field(LNK5, "$(P)OUTPUTSTATUS.PROC")
+
+    field(DOL6, "1")
+    field(DLY6, "0.05")
+    field(LNK6, "$(P)VOLTAGE:RANGE.PROC")
+
+    field(DOL7, "1")
+    field(DLY7, "0.05")
+    field(LNK7, "$(P)CURRENT:RANGE.PROC")
+
+}
+
+record(mbbi, "$(P)SIM:CURRENT:RANGE")
+{
+    field(DTYP, "Raw Soft Channel")
+    field(ZRST, "Full")
+    field(ONST, "Quarter")
+	field(ZRVL, "1")
+	field(ONVL, "4")
+}
+
+record(longout, "$(P)SIM:CURRENT:RANGE:AUTO")
+{
+}
+
+record(mbbi, "$(P)SIM:VOLTAGE:RANGE")
+{
+    field(DTYP, "Raw Soft Channel")
+    field(ZRST, "Full")
+    field(ONST, "Quarter")
+	field(ZRVL, "1")
+	field(ONVL, "4")
+}
+
+record(longout, "$(P)SIM:VOLTAGE:RANGE:AUTO")
+{
 }

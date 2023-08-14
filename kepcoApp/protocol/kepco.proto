@@ -100,6 +100,38 @@ RST
     out "*RST";
 }
 
+getCurrentRange
+{
+    out "CURR:RANG?";
+	in "%d";
+}
+
+getVoltageRange
+{
+    out "VOLT:RANG?";
+	in "%d";
+}
+
+setCurrentRange
+{
+    out "CURR:RANG %d";
+}
+
+setVoltageRange
+{
+    out "VOLT:RANG %d";
+}
+
+setAutoCurrentRange
+{
+    out "CURR:RANG:AUTO %d";
+}
+
+setAutoVoltageRange
+{
+    out "VOLT:RANG:AUTO %d";
+}
+
 resetWaitResendSPs {
     # Reset 
     RST;
