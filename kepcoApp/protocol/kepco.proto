@@ -1,4 +1,5 @@
-Terminator = '\r\n';
+InTerminator = '\r\n';
+OutTerminator = '\n';
 ReplyTimeout = 2000;
 
 getIDN {
@@ -26,56 +27,79 @@ setRemote
 readActualCurrent {
     out "MEAS:CURR?";
     in "%f";
-    ExtraInput = Ignore;
 }
 
 readSetpointCurrent {
     out "CURR?";
     in "%f";
-    ExtraInput = Ignore;
 }
 
 writeCurrent {
-    # Set into remote mode in order to communicate current
+    # Set into remote mode and communicate current
     out "SYST:REM 1";
-
-    # Communicate current
+    wait 10;
     out "CURR %f";
+	wait 10;
+}
+
+# special for muon zerofield
+writeCurrentNoRemote {
+    # communicate current
+    out "CURR %f";
+	wait 20;
+	# need to wait briefly otherwise seem to get an inaccurate setpoint reading 
+	out "CURR?";
+	in "%(\$1)f";
 }
 
 readActualVoltage {
     out "MEAS:VOLT?";
     in "%f";
-    ExtraInput = Ignore;
 }
 
 readSetpointVoltage {
     out "VOLT?";
     in "%f";
-    ExtraInput = Ignore;
 }
 
 writeVoltage {
-    # Set into remote mode in order to communicate voltage
+    # Set into remote mode and communicate voltage
     out "SYST:REM 1";
-
-    # Communicate voltage
+    wait 10;
     out "VOLT %f";
+	wait 10;
+}
+
+writeVoltageNoRemote {
+    # communicate voltage
+    out "VOLT %f";
+	wait 20;
 }
 
 readOutputMode
 {
     out "FUNC:MODE?";
     in "%d";
-    ExtraInput = Ignore;
+}
+
+sendCommand
+{
+    out "%s";
+    wait 10;
+}
+
+sendCommandAndRead
+{
+    out "%s";
+    in "%39c";
+    ExtraInput = Ignore;    
 }
 
 setOutputMode
 {
-    # Set into remote mode in order to communicate output mode
+    # Set into remote mode and Communicate output mode
     out "SYST:REM 1";
-
-    # Communicate output mode
+    wait 10;
     out "FUNC:MODE %{VOLT|CURR}";
 }
 
@@ -83,15 +107,13 @@ readOutputStatus
 {
     out "OUTP?";
     in "%d";
-    ExtraInput = Ignore;
 }
 
 setOutputStatus
 {
-    # Set into remote mode in order to communicate output status
+    # Set into remote mode and communicate output status
     out "SYST:REM 1";
-
-    # Communicate output status
+    wait 10;
     out "OUTP %{0|1}";
 }
 
@@ -103,32 +125,40 @@ RST
 getCurrentRange
 {
     out "CURR:RANG?";
-	in "%d";
+    in "%d";
 }
 
 getVoltageRange
 {
     out "VOLT:RANG?";
-	in "%d";
+    in "%d";
 }
 
 setCurrentRange
 {
+    out "SYST:REM 1";
+    wait 10;
     out "CURR:RANG %d";
 }
 
 setVoltageRange
 {
+    out "SYST:REM 1";
+    wait 10;
     out "VOLT:RANG %d";
 }
 
 setAutoCurrentRange
 {
+    out "SYST:REM 1";
+    wait 10;
     out "CURR:RANG:AUTO %d";
 }
 
 setAutoVoltageRange
 {
+    out "SYST:REM 1";
+    wait 10;
     out "VOLT:RANG:AUTO %d";
 }
 

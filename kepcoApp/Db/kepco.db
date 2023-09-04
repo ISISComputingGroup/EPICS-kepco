@@ -48,7 +48,47 @@ record(stringin, "$(P)RST")
     field(SIML, "$(P)SIM")
     field(SIOL, "$(P)SIM:RST")
     field(SDIS, "$(P)DISABLE")
-} 
+}
+
+record(stringout, "$(P)SENDCMD")
+{
+    field(DESC, "Send command")
+    field(DTYP, "stream")
+    field(OUT,  "@kepco.proto sendCommand $(PORT)")
+    field(SDIS, "$(P)DISABLE")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:SENDCMD")
+}
+
+record(stringout, "$(P)SENDRECV")
+{
+    field(DESC, "Send and read")
+    field(DTYP, "stream")
+    field(OUT,  "@kepco.proto sendCommandAndRead $(PORT)")
+    field(SDIS, "$(P)DISABLE")
+    field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:SENDRECV")
+}
+
+## if we wished to do some initialisation this is an example
+## currently ECHO and PROM seem to be off anyway as well as LF0
+## though we set xon/xoff in IOC we don't currently enabel it on
+## kepco
+#record(sseq, "$(P)MAIN:INIT")
+#{
+#    field(STR1, "SYST:SET LF0")
+#    field(STR2, "SYST:COMM:SER:ECHO OFF")
+#    field(STR3, "SYST:COMM:SER:PROM OFF")
+#    field(STR4, "SYST:COMM:SER:PACE XON")
+#    field(LNK1, "$(P)SENDCMD PP")
+#    field(LNK2, "$(P)SENDCMD PP")
+#    field(LNK3, "$(P)SENDCMD PP")
+#    field(LNK4, "$(P)SENDCMD PP")
+#    field(DLY2, "0.05")
+#    field(DLY3, "0.05")
+#    field(DLY4, "0.05")
+#    field(PINI, "YES")
+#}
 
 record(stringin, "$(P)RSTRSND") {
     field(DESC, "Reset and resend setpoints to kepco")
@@ -166,6 +206,10 @@ record(stringout, "$(P)CURRENT:RANGE:INIT")
 
 # These current PVs communicate with the device but are not read/set by the user directly, instead control is done 
 # through the ramping PVs, which decide what to forward to the hardware
+# note that the muon zerofield controler reads directly from _CURRENT:SP:RBV rather than
+# from CURRENT:SP:RBV for performance reasons as it does fast updates
+# this PV is also updated via stream device record redirection when a new SP is set,
+# again for muon zerofield performance reasons
 record(ai, "$(P)_CURRENT:SP:RBV") 
 {
     field(DESC, "Current Setpoint Readback")
@@ -182,12 +226,16 @@ record(ai, "$(P)_CURRENT:SP:RBV")
     info(archive, "5.0 VAL")
 }
 
+## if we needed a faster update of SP:RBV in standard mode we could try adding
+##     $(IFREMOTE_ON_SET=)    field(FLNK, "$(P)_CURRENT:SP:RBV.PROC CA")
+## in IFNOTREMOTE_ON_SET mode we read and update SP:RBV directly from protocol file 
 record(ao, "$(P)_CURRENT:SP") 
 {
     field(DESC, "Current Setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto writeCurrent($(P)) $(PORT)")
+$(IFREMOTE_ON_SET=)     field(OUT,  "@kepco.proto writeCurrent $(PORT)")
+$(IFNOTREMOTE_ON_SET=#) field(OUT,  "@kepco.proto writeCurrentNoRemote($(P)_CURRENT:SP:RBV) $(PORT)")
     field(EGU, "A")
     #field(HOPR, "5.0")
     #field(LOPR, "0.01")    
@@ -229,12 +277,16 @@ record(ai, "$(P)VOLTAGE:SP:RBV")
     info(archive, "5.0 VAL")
 }
 
+## if we needed a faster update of SP:RBV in standard mode we could try adding
+##    $(IFREMOTE_ON_SET=) field(FLNK, "$(P)VOLTAGE:SP:RBV.PROC CA")
+## currently writeVoltageNoRemote does not update SP:RBV unlike writeCurrentNoRemote
 record(ao, "$(P)VOLTAGE:SP") 
 {
     field(DESC, "Voltage setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto writeVoltage($(P)) $(PORT)")
+$(IFREMOTE_ON_SET=)    field(OUT,  "@kepco.proto writeVoltage $(PORT)")
+$(IFNOTREMOTE_ON_SET=) field(OUT,  "@kepco.proto writeVoltageNoRemote $(PORT)")
     field(EGU, "V")
     #field(HOPR, "5.0")
     #field(LOPR, "0.01")    
@@ -387,6 +439,11 @@ record(ao, "$(P)FIELD:SP:RBV")
 
 ### SIMULATION RECORDS ###
 
+record(stringout, "$(P)SIM:SENDCMD")
+{
+}
+alias("$(P)SIM:SENDCMD","$(P)SIM:SENDRECV")
+
 record(ai, "$(P)SIM:CURRENT")
 {
     field(SCAN, "Passive")
@@ -490,23 +547,28 @@ record(seq, "$(P)_SCAN_LOOP") {
     field(DOL3, "1")
     field(DLY3, "0.05")
     field(LNK3, "$(P)VOLTAGE:SP:RBV.PROC")
+}
+
+record(seq, "$(P)_SCAN_LOOP2") {
+    field(DESC, "Control scans")
+    field(SELM, "All")
+    field(SELN, "1")
+    field(SCAN, "2 second")
+    field(DOL1, "1")
+    field(DLY1, "0.05")
+    field(LNK1, "$(P)OUTPUTMODE.PROC")
+
+    field(DOL2, "1")
+    field(DLY2, "0.05")
+    field(LNK2, "$(P)OUTPUTSTATUS.PROC")
+
+    field(DOL3, "1")
+    field(DLY3, "0.05")
+    field(LNK3, "$(P)VOLTAGE:RANGE.PROC")
 
     field(DOL4, "1")
     field(DLY4, "0.05")
-    field(LNK4, "$(P)OUTPUTMODE.PROC")
-
-    field(DOL5, "1")
-    field(DLY5, "0.05")
-    field(LNK5, "$(P)OUTPUTSTATUS.PROC")
-
-    field(DOL6, "1")
-    field(DLY6, "0.05")
-    field(LNK6, "$(P)VOLTAGE:RANGE.PROC")
-
-    field(DOL7, "1")
-    field(DLY7, "0.05")
-    field(LNK7, "$(P)CURRENT:RANGE.PROC")
-
+    field(LNK4, "$(P)CURRENT:RANGE.PROC")	
 }
 
 record(mbbi, "$(P)SIM:CURRENT:RANGE")
