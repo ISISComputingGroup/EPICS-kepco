@@ -39,17 +39,18 @@ writeCurrent {
     out "SYST:REM 1";
     wait 10;
     out "CURR %f";
-	wait 10;
+    wait 10;
 }
 
 # special for muon zerofield
 writeCurrentNoRemote {
     # communicate current
     out "CURR %f";
-	wait 20;
-	# need to wait briefly otherwise seem to get an inaccurate setpoint reading 
-	out "CURR?";
-	in "%(\$1)f";
+    wait 20;
+    # need to wait briefly otherwise
+    # seem to get an inaccurate setpoint reading
+    out "CURR?";
+    in "%(\$1_CURRENT:SP:RBV)f";
 }
 
 readActualVoltage {
@@ -67,13 +68,13 @@ writeVoltage {
     out "SYST:REM 1";
     wait 10;
     out "VOLT %f";
-	wait 10;
+    wait 10;
 }
 
 writeVoltageNoRemote {
     # communicate voltage
     out "VOLT %f";
-	wait 20;
+    wait 20;
 }
 
 readOutputMode
