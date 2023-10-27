@@ -43,12 +43,18 @@ writeCurrent {
 }
 
 # special for muon zerofield
+# the wait 60 will not normally cause a wait as usually the 
+# psu writes are so small in the zerofield that they are within
+# its tolerance of previous write. We had 20ms before but possibly
+# too small. Varios items on web that may or may not be relevant talk about
+# tolerance for kepco to respond. They may more relate to output than
+# setpoint readback, but 60 seems to be the biggest number mentioned. 
 writeCurrentNoRemote {
     # communicate current
     out "CURR %f";
-    wait 20;
     # need to wait briefly otherwise
     # seem to get an inaccurate setpoint reading
+    wait 60;
     out "CURR?";
     in "%(\$1_CURRENT:SP:RBV)f";
 }
