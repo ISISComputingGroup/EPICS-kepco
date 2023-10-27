@@ -11,6 +11,9 @@ record(ao, "$(P)CURRENT:SP")
     info(INTEREST, "HIGH")
     info(archive, "VAL")
     field(PINI, "$(AUTOSAVE_CURRENT)")
+# if we are rapidly setting (e.g. muon zerofield) we do not 
+# want to log every write
+$(IFNOTREMOTE_ON_SET=#) field(ASG, "NOTRAPW")
     info(autosaveFields, "VAL")
 }
 
