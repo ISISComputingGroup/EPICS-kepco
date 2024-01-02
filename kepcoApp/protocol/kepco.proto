@@ -53,10 +53,10 @@ writeCurrentNoRemote {
     # communicate current
     out "CURR %f";
     # need to wait briefly otherwise
-    # seem to get an inaccurate setpoint reading
-    wait 60;
-    out "CURR?";
-    in "%(\$1_CURRENT:SP:RBV)f";
+    # seem to get an inaccurate setpoint readback reading
+    wait 20;
+#    out "CURR?";
+#    in "%(\$1_CURRENT:SP:RBV)f";
 }
 
 readActualVoltage {
