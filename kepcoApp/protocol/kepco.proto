@@ -54,7 +54,7 @@ writeCurrentNoRemote {
     out "CURR %f";
     # need to wait briefly otherwise
     # seem to get an inaccurate setpoint readback reading
-    wait 20;
+    wait 60;
 #    out "CURR?";
 #    in "%(\$1_CURRENT:SP:RBV)f";
 }

@@ -230,10 +230,7 @@ record(ai, "$(P)_CURRENT:SP:RBV")
     info(archive, "5.0 VAL")
 }
 
-## if we needed a faster update of SP:RBV in standard mode we could try adding
-##     $(IFREMOTE_ON_SET=)    field(FLNK, "$(P)_CURRENT:SP:RBV.PROC CA")
-## in IFNOTREMOTE_ON_SET mode we read and update SP:RBV directly from protocol file 
-## not this PV is written to directly by muon zerofiled controller, but not normally
+## note this PV is written to directly by muon zerofiled controller, but not normally
 ## by a user
 record(ao, "$(P)_CURRENT:SP") 
 {
@@ -255,7 +252,7 @@ $(IFNOTREMOTE_ON_SET=#) field(OUT,  "@kepco.proto writeCurrentNoRemote($(P)) $(P
 # if we are rapidly setting (e.g. muon zerofield) we do not 
 # want to log every write
 $(IFNOTREMOTE_ON_SET=#) field(ASG, "NOTRAPW")
-    field(FLNK, "$(P)_CURRENT:SP:RBV.PROC")
+    field(FLNK, "$(P)_CURRENT:SP:RBV.PROC CA")
 }
 
 record(ai, "$(P)VOLTAGE") 
@@ -464,7 +461,7 @@ record(ai, "$(P)SIM:CURRENT")
     # This FLNK approximates this behaviour in recsim mode.
     # The muon ZF system requires fairly quick updates of setpoint readbacks after setting
     # setpoints, hence this extra complexity.
-    field(FLNK, "$(P)_CURRENT:SP:RBV")
+    field(FLNK, "$(P)_CURRENT:SP:RBV.PROC CA")
 }
 
 alias("$(P)SIM:CURRENT","$(P)SIM:CURRENT:SP")
