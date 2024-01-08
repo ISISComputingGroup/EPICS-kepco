@@ -225,7 +225,7 @@ record(ai, "$(P)_CURRENT:SP:RBV")
     field(SIOL, "$(P)SIM:CURRENT:SP:RBV")
     field(SDIS, "$(P)DISABLE CA")
 	field(PINI, "YES")
-    field(FLNK, "$(P)FIELD:SP:RBV:CONV.PROC")
+    field(FLNK, "$(P)FIELD:SP:RBV:CONV.PROC CA")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
 }
