@@ -10,6 +10,7 @@ record(ao, "$(P)CURRENT:SP")
     field(FLNK, "$(P)AUTORAMP:SP")
     info(INTEREST, "HIGH")
     field(PINI, "$(AUTOSAVE_CURRENT)")
+    field(PREC, "3")
 # if we are rapidly setting (e.g. muon zerofield) we do not 
 # want to log every write
 $(IFNOTREMOTE_ON_SET=#) field(ASG, "NOTRAPW")
@@ -25,6 +26,7 @@ record(ao, "$(P)CURRENT:RAW:SP")
     field(DTYP, "asynFloat64")
     field(OUT, "@asyn($(READ),0,1)TGT")
     field(EGU, "A")
+    field(PREC, "3")
     field(DRVH, $(CURRENT_MAX))
     field(DRVL, "-$(CURRENT_MAX)")
 }
