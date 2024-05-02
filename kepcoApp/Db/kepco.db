@@ -177,6 +177,7 @@ record(seq, "$(P)CURRENT:RANGE:SP:SEQ")
     field(LNK1, "$(P)CURRENT:RANGE:SP_ PP")
     field(LNK2, "$(P)CURRENT:RANGE:SP_ PP")
     field(LNK3, "$(P)CURRENT:RANGE:AUTO:SP_ PP")
+	field(FLNK, "$(P)CURRENT:RANGE")
 }
 
 record(longout, "$(P)CURRENT:RANGE:SP_")
@@ -302,6 +303,7 @@ $(IFNOTREMOTE_ON_SET=) field(OUT,  "@kepco.proto writeVoltageNoRemote $(PORT)")
     field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:VOLTAGE:SP PP")
     field(SDIS, "$(P)DISABLE CA")
+	field(FLNK, "$(P)VOLTAGE:SP:RBV.PROC CA")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
     info(autosaveFields, "VAL")
@@ -345,6 +347,7 @@ record(seq, "$(P)VOLTAGE:RANGE:SP:SEQ")
     field(LNK1, "$(P)VOLTAGE:RANGE:SP_ PP")
     field(LNK2, "$(P)VOLTAGE:RANGE:SP_ PP")
     field(LNK3, "$(P)VOLTAGE:RANGE:AUTO:SP_ PP")
+	field(FLNK, "$(P)VOLTAGE:RANGE")
 }
 
 record(longout, "$(P)VOLTAGE:RANGE:SP_")
@@ -395,6 +398,7 @@ record(bo, "$(P)OUTPUTMODE:SP")
     field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:OUTPUTMODE:SP PP")
     field(SDIS, "$(P)DISABLE CA")
+	field(FLNK, "$(P)OUTPUTMODE")
     info(autosaveFields, "VAL")
 }
 
@@ -424,6 +428,7 @@ record(bo, "$(P)OUTPUTSTATUS:SP")
     field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:OUTPUTSTATUS:SP PP")
     field(SDIS, "$(P)DISABLE CA")
+	field(FLNK, "$(P)OUTPUTSTATUS")
     info(autosaveFields, "VAL")
 }
 
@@ -551,9 +556,9 @@ record(seq, "$(P)_SCAN_LOOP") {
     field(DLY2, "0.2")
     field(LNK2, "$(P)VOLTAGE:SP:RBV.PROC CA")
 
-#    field(DOL3, "1")
-#    field(DLY3, "0.2")
-#    field(LNK3, "$(P)_CURRENT:SP:RBV.PROC CA")
+# _CURRENT:SP:RBV moved to _SCAN_LOOP2 on a slower timer as
+# OUTPUTMODE OUTPUTSTATUS VOLTAGE:RANGE CURRENT:RANGE
+# also updated after corresponding SP updated
 }
 
 record(seq, "$(P)_SCAN_LOOP2") {
