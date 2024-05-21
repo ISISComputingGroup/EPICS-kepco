@@ -1,4 +1,6 @@
 ASYN=$(SUPPORT)/asyn/master
+CALC=$(SUPPORT)/calc/master
+SSCAN=$(SUPPORT)/sscan/master
 ONCRPC=$(SUPPORT)/oncrpc/master
 DEVIOCSTATS=$(SUPPORT)/devIocStats/master
 ICPCONFIG=$(SUPPORT)/icpconfig/master

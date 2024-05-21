@@ -15,15 +15,16 @@ DBD += kepco_sim.dbd
 # kepco_sim.dbd will be made up from these files:
 kepco_sim_DBD += base.dbd
 
-kepco_sim_DBD += stream.dbd
+kepco_sim_DBD += calcSupport.dbd
 kepco_sim_DBD += asyn.dbd
 kepco_sim_DBD += drvAsynSerialPort.dbd
 kepco_sim_DBD += drvAsynIPPort.dbd
 kepco_sim_DBD += devIocStats.dbd
 kepco_sim_DBD += pvdump.dbd 
+kepco_sim_DBD += stream.dbd
 
 kepco_sim_LIBS += stream
-kepco_sim_LIBS += asyn devIocStats pvdump $(MYSQLLIB) easySQLite sqlite utilities icpconfig pugixml
+kepco_sim_LIBS += asyn calc sscan devIocStats pvdump $(MYSQLLIB) easySQLite sqlite utilities icpconfig pugixml
 
 # kepco_sim_registerRecordDeviceDriver.cpp derives from kepco_sim.dbd
 kepco_sim_SRCS += kepco_sim_registerRecordDeviceDriver.cpp
