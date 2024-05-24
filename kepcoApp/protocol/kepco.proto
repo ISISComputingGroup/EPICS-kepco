@@ -2,12 +2,20 @@ InTerminator = '\r\n';
 OutTerminator = '\n';
 ReplyTimeout = 2000;
 
+waitdelay = 10;
+
+goRemote {
+    out "SYST:REM 1";
+    wait $waitdelay;
+}
+
 getIDN {
     out "*IDN?";
     #Read no more that 39 chars (EPICS limit)
     in "%/(.{0,39})/";
     ExtraInput = Ignore;
 }
+
 
 getFirmware {
     out "*IDN?";
@@ -36,10 +44,9 @@ readSetpointCurrent {
 
 writeCurrent {
     # Set into remote mode and communicate current
-    out "SYST:REM 1";
-    wait 10;
+    goRemote;
     out "CURR %f";
-    wait 10;
+    wait $waitdelay;
 }
 
 # special for muon zerofield
@@ -71,10 +78,9 @@ readSetpointVoltage {
 
 writeVoltage {
     # Set into remote mode and communicate voltage
-    out "SYST:REM 1";
-    wait 10;
+    goRemote;
     out "VOLT %f";
-    wait 10;
+    wait $waitdelay;
 }
 
 writeVoltageNoRemote {
@@ -92,7 +98,7 @@ readOutputMode
 sendCommand
 {
     out "%s";
-    wait 10;
+    wait $waitdelay;
 }
 
 sendCommandAndRead
@@ -105,8 +111,7 @@ sendCommandAndRead
 setOutputMode
 {
     # Set into remote mode and Communicate output mode
-    out "SYST:REM 1";
-    wait 10;
+    goRemote;
     out "FUNC:MODE %{VOLT|CURR}";
 }
 
@@ -119,8 +124,7 @@ readOutputStatus
 setOutputStatus
 {
     # Set into remote mode and communicate output status
-    out "SYST:REM 1";
-    wait 10;
+    goRemote;
     out "OUTP %{0|1}";
 }
 
@@ -143,29 +147,25 @@ getVoltageRange
 
 setCurrentRange
 {
-    out "SYST:REM 1";
-    wait 10;
+    goRemote;
     out "CURR:RANG %d";
 }
 
 setVoltageRange
 {
-    out "SYST:REM 1";
-    wait 10;
+    goRemote;
     out "VOLT:RANG %d";
 }
 
 setAutoCurrentRange
 {
-    out "SYST:REM 1";
-    wait 10;
+    goRemote;
     out "CURR:RANG:AUTO %d";
 }
 
 setAutoVoltageRange
 {
-    out "SYST:REM 1";
-    wait 10;
+    goRemote;
     out "VOLT:RANG:AUTO %d";
 }
 
