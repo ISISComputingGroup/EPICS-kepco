@@ -24,9 +24,9 @@ record(stringin, "$(P)IDN")
     field(INP,  "@kepco.proto getIDN $(PORT)")
     field(PINI, "YES")
     field(FLNK, "$(P)REMOTE")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:IDN")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
 }
 
 record(ai, "$(P)FIRMWARE") {
@@ -34,9 +34,9 @@ record(ai, "$(P)FIRMWARE") {
     field(DTYP, "stream")
     field(INP,  "@kepco.proto getFirmware $(PORT)")
     field(PINI, "YES")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:FIRMWARE")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
     field(FLNK, "$(P)RSTRSND:ON_START.PROC")
 }
 
@@ -45,18 +45,58 @@ record(stringin, "$(P)RST")
     field(DESC, "Reset the power supply")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto RST $(PORT)")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:RST")
-    field(SDIS, "$(P)DISABLE")
-} 
+    field(SDIS, "$(P)DISABLE CA")
+}
+
+record(stringout, "$(P)SENDCMD")
+{
+    field(DESC, "Send command")
+    field(DTYP, "stream")
+    field(OUT,  "@kepco.proto sendCommand $(PORT)")
+    field(SDIS, "$(P)DISABLE CA")
+    field(SIML, "$(P)SIM CA")
+    field(SIOL, "$(P)SIM:SENDCMD")
+}
+
+record(stringout, "$(P)SENDRECV")
+{
+    field(DESC, "Send and read")
+    field(DTYP, "stream")
+    field(OUT,  "@kepco.proto sendCommandAndRead $(PORT)")
+    field(SDIS, "$(P)DISABLE CA")
+    field(SIML, "$(P)SIM CA")
+    field(SIOL, "$(P)SIM:SENDRECV")
+}
+
+## if we wished to do some initialisation this is an example
+## currently ECHO and PROM seem to be off anyway as well as LF0
+## though we set xon/xoff in IOC we don't currently enabel it on
+## kepco
+#record(sseq, "$(P)MAIN:INIT")
+#{
+#    field(STR1, "SYST:SET LF0")
+#    field(STR2, "SYST:COMM:SER:ECHO OFF")
+#    field(STR3, "SYST:COMM:SER:PROM OFF")
+#    field(STR4, "SYST:COMM:SER:PACE XON")
+#    field(LNK1, "$(P)SENDCMD PP")
+#    field(LNK2, "$(P)SENDCMD PP")
+#    field(LNK3, "$(P)SENDCMD PP")
+#    field(LNK4, "$(P)SENDCMD PP")
+#    field(DLY2, "0.05")
+#    field(DLY3, "0.05")
+#    field(DLY4, "0.05")
+#    field(PINI, "YES")
+#}
 
 record(stringin, "$(P)RSTRSND") {
     field(DESC, "Reset and resend setpoints to kepco")
     field(DTYP, "stream")
     field(INP, "@kepco.proto resetWaitResendSPs($(P)) $(PORT) ") # Reset and resend commands via proto so we can wait for reset to complete
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:RSTRSND")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
 }
 
 record(calcout, "$(P)RSTRSND:ON_START") {
@@ -78,9 +118,9 @@ record(bo, "$(P)REMOTE")
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(VAL, "1")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:REMOTE")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
 }
 
 record(ai, "$(P)CURRENT") 
@@ -92,9 +132,9 @@ record(ai, "$(P)CURRENT")
     field(PREC, "3")
     field(EGU,  "A")
     field(HOPR, $(CURRENT_MAX=0))
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:CURRENT")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
 }
@@ -109,9 +149,9 @@ record(mbbi, "$(P)CURRENT:RANGE")
     field(DTYP, "stream")
     field(INP,  "@kepco.proto getCurrentRange $(PORT)")
     info(archive, "VAL")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:CURRENT:RANGE")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
     field(SCAN, "Passive") # Scanned by _SCAN_LOOP
 }
 
@@ -137,24 +177,25 @@ record(seq, "$(P)CURRENT:RANGE:SP:SEQ")
     field(LNK1, "$(P)CURRENT:RANGE:SP_ PP")
     field(LNK2, "$(P)CURRENT:RANGE:SP_ PP")
     field(LNK3, "$(P)CURRENT:RANGE:AUTO:SP_ PP")
+	field(FLNK, "$(P)CURRENT:RANGE")
 }
 
 record(longout, "$(P)CURRENT:RANGE:SP_")
 {
     field(DTYP, "stream")
     field(OUT,  "@kepco.proto setCurrentRange $(PORT)")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:CURRENT:RANGE.RVAL PP")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
 }
 
 record(longout, "$(P)CURRENT:RANGE:AUTO:SP_")
 {
     field(DTYP, "stream")
     field(OUT,  "@kepco.proto setAutoCurrentRange $(PORT)")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:CURRENT:RANGE:AUTO PP")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
 }
 
 record(stringout, "$(P)CURRENT:RANGE:INIT")
@@ -164,8 +205,15 @@ record(stringout, "$(P)CURRENT:RANGE:INIT")
 	field(PINI, "YES")
 }
 
-# These current PVs communicate with the device but are not read/set by the user directly, instead control is done 
+# These current PVs communicate with the device but are not usually read/set by the user directly,
+# instead control is done 
 # through the ramping PVs, which decide what to forward to the hardware
+#
+# note that the muon zerofield controler is different, it reads directly from _CURRENT:SP:RBV rather than
+# from CURRENT:SP:RBV for performance reasons as it does fast updates
+# it also writes directly to _CURRENT:SP
+# this PV is also updated via stream device record redirection when a new SP is set,
+# again for muon zerofield performance reasons
 record(ai, "$(P)_CURRENT:SP:RBV") 
 {
     field(DESC, "Current Setpoint Readback")
@@ -174,29 +222,38 @@ record(ai, "$(P)_CURRENT:SP:RBV")
     field(INP,  "@kepco.proto readSetpointCurrent $(PORT)")
     field(PREC, "3")
     field(EGU,  "A")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:CURRENT:SP:RBV")
-    field(SDIS, "$(P)DISABLE")
-    field(FLNK, "$(P)FIELD:SP:RBV:CONV.PROC PP")
+    field(SDIS, "$(P)DISABLE CA")
+	field(PINI, "YES")
+    field(FLNK, "$(P)FIELD:SP:RBV:CONV.PROC CA")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
 }
 
+## note this PV is written to directly by muon zerofiled controller, but not normally
+## by a user
 record(ao, "$(P)_CURRENT:SP") 
 {
     field(DESC, "Current Setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto writeCurrent($(P)) $(PORT)")
+$(IFREMOTE_ON_SET=)     field(OUT,  "@kepco.proto writeCurrent $(PORT)")
+$(IFNOTREMOTE_ON_SET=#) field(OUT,  "@kepco.proto writeCurrentNoRemote($(P)) $(PORT)")
+    field(DRVH, $(CURRENT_MAX=0))
+    field(DRVL, "-$(CURRENT_MAX=0)")
     field(EGU, "A")
     #field(HOPR, "5.0")
     #field(LOPR, "0.01")    
     field(PREC, "3")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:CURRENT:SP PP")
-    field(SDIS, "$(P)DISABLE")
-    info(INTEREST, "HIGH")
+    field(SDIS, "$(P)DISABLE CA")
     info(archive, "5.0 VAL")
+# if we are rapidly setting (e.g. muon zerofield) we do not 
+# want to log every write
+$(IFNOTREMOTE_ON_SET=#) field(ASG, "NOTRAPW")
+    field(FLNK, "$(P)_CURRENT:SP:RBV.PROC CA")
 }
 
 record(ai, "$(P)VOLTAGE") 
@@ -207,9 +264,9 @@ record(ai, "$(P)VOLTAGE")
     field(INP,  "@kepco.proto readActualVoltage $(PORT)")
     field(PREC, "3")
     field(EGU,  "V")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:VOLTAGE")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
 }
@@ -222,26 +279,31 @@ record(ai, "$(P)VOLTAGE:SP:RBV")
     field(INP,  "@kepco.proto readSetpointVoltage $(PORT)")
     field(PREC, "3")
     field(EGU,  "V")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:VOLTAGE:SP:RBV")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
 }
 
+## if we needed a faster update of SP:RBV in standard mode we could try adding
+##    $(IFREMOTE_ON_SET=) field(FLNK, "$(P)VOLTAGE:SP:RBV.PROC CA")
+## currently writeVoltageNoRemote does not update SP:RBV unlike writeCurrentNoRemote
 record(ao, "$(P)VOLTAGE:SP") 
 {
     field(DESC, "Voltage setpoint")
     field(SCAN, "Passive")
     field(DTYP, "stream")
-    field(OUT,  "@kepco.proto writeVoltage($(P)) $(PORT)")
+$(IFREMOTE_ON_SET=)    field(OUT,  "@kepco.proto writeVoltage $(PORT)")
+$(IFNOTREMOTE_ON_SET=) field(OUT,  "@kepco.proto writeVoltageNoRemote $(PORT)")
     field(EGU, "V")
     #field(HOPR, "5.0")
     #field(LOPR, "0.01")    
     field(PREC, "3")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:VOLTAGE:SP PP")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
+	field(FLNK, "$(P)VOLTAGE:SP:RBV.PROC CA")
     info(INTEREST, "HIGH")
     info(archive, "5.0 VAL")
     info(autosaveFields, "VAL")
@@ -258,9 +320,9 @@ record(mbbi, "$(P)VOLTAGE:RANGE")
     field(INP,  "@kepco.proto getVoltageRange $(PORT)")
     info(archive, "VAL")
     field(SCAN, "Passive") # Scanned by _SCAN_LOOP
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:VOLTAGE:RANGE")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
 }
 
 # not autosaved as set by macro from RANGE:INIT 
@@ -285,24 +347,25 @@ record(seq, "$(P)VOLTAGE:RANGE:SP:SEQ")
     field(LNK1, "$(P)VOLTAGE:RANGE:SP_ PP")
     field(LNK2, "$(P)VOLTAGE:RANGE:SP_ PP")
     field(LNK3, "$(P)VOLTAGE:RANGE:AUTO:SP_ PP")
+	field(FLNK, "$(P)VOLTAGE:RANGE")
 }
 
 record(longout, "$(P)VOLTAGE:RANGE:SP_")
 {
     field(DTYP, "stream")
     field(OUT,  "@kepco.proto setVoltageRange $(PORT)")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:VOLTAGE:RANGE.RVAL PP")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
 }
 
 record(longout, "$(P)VOLTAGE:RANGE:AUTO:SP_")
 {
     field(DTYP, "stream")
     field(OUT,  "@kepco.proto setAutoVoltageRange $(PORT)")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:VOLTAGE:RANGE:AUTO PP")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
 }
 
 record(stringout, "$(P)VOLTAGE:RANGE:INIT")
@@ -319,9 +382,9 @@ record(bi, "$(P)OUTPUTMODE")
     field(INP,  "@kepco.proto readOutputMode $(PORT)")
     field(ZNAM, "VOLTAGE")
     field(ONAM, "CURRENT")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:OUTPUTMODE")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
     info(archive, "5.0 VAL")
 }
 
@@ -332,9 +395,10 @@ record(bo, "$(P)OUTPUTMODE:SP")
     field(OUT,  "@kepco.proto setOutputMode($(P)) $(PORT)")
     field(ZNAM, "VOLTAGE")
     field(ONAM, "CURRENT")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:OUTPUTMODE:SP PP")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
+	field(FLNK, "$(P)OUTPUTMODE")
     info(autosaveFields, "VAL")
 }
 
@@ -347,9 +411,9 @@ record(bi, "$(P)OUTPUTSTATUS")
     field(INP,  "@kepco.proto readOutputStatus $(PORT)")
     field(ZNAM, "OFF")
     field(ONAM, "ON")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:OUTPUTSTATUS")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
     info(alarm, "KEPCO")
     info(archive, "5.0 VAL")
 }
@@ -361,9 +425,10 @@ record(bo, "$(P)OUTPUTSTATUS:SP")
     field(OUT,  "@kepco.proto setOutputStatus($(P)) $(PORT)")
     field(ZNAM, "OFF")
     field(ONAM, "ON")
-    field(SIML, "$(P)SIM")
+    field(SIML, "$(P)SIM CA")
     field(SIOL, "$(P)SIM:OUTPUTSTATUS:SP PP")
-    field(SDIS, "$(P)DISABLE")
+    field(SDIS, "$(P)DISABLE CA")
+	field(FLNK, "$(P)OUTPUTSTATUS")
     info(autosaveFields, "VAL")
 }
 
@@ -387,6 +452,11 @@ record(ao, "$(P)FIELD:SP:RBV")
 
 ### SIMULATION RECORDS ###
 
+record(stringout, "$(P)SIM:SENDCMD")
+{
+}
+alias("$(P)SIM:SENDCMD","$(P)SIM:SENDRECV")
+
 record(ai, "$(P)SIM:CURRENT")
 {
     field(SCAN, "Passive")
@@ -396,7 +466,7 @@ record(ai, "$(P)SIM:CURRENT")
     # This FLNK approximates this behaviour in recsim mode.
     # The muon ZF system requires fairly quick updates of setpoint readbacks after setting
     # setpoints, hence this extra complexity.
-    field(FLNK, "$(P)_CURRENT:SP:RBV")
+    field(FLNK, "$(P)_CURRENT:SP:RBV.PROC CA")
 }
 
 alias("$(P)SIM:CURRENT","$(P)SIM:CURRENT:SP")
@@ -472,41 +542,48 @@ alias("$(P)SIM:OUTPUTSTATUS","$(P)SIM:OUTPUTSTATUS:SP:RBV")
 record(seq, "$(P)_SCAN_LOOP") {
     field(DESC, "Control scans")
     field(SELM, "All")
-    field(SELN, "1")
-    field(SCAN, ".5 second")
+    field(SCAN, "1 second")
 
     field(DOL0, "1")
-    field(DLY0, "0")
-    field(LNK0, "$(P)_CURRENT:SP:RBV.PROC")
+    field(DLY0, "0.2")
+    field(LNK0, "$(P)CURRENT.PROC CA")
 
     field(DOL1, "1")
-    field(DLY1, "0.05")
-    field(LNK1, "$(P)CURRENT.PROC")
+    field(DLY1, "0.2")
+    field(LNK1, "$(P)VOLTAGE.PROC CA")
 
     field(DOL2, "1")
-    field(DLY2, "0.05")
-    field(LNK2, "$(P)VOLTAGE.PROC")
+    field(DLY2, "0.2")
+    field(LNK2, "$(P)VOLTAGE:SP:RBV.PROC CA")
+
+# _CURRENT:SP:RBV moved to _SCAN_LOOP2 on a slower timer as
+# OUTPUTMODE OUTPUTSTATUS VOLTAGE:RANGE CURRENT:RANGE
+# also updated after corresponding SP updated
+}
+
+record(seq, "$(P)_SCAN_LOOP2") {
+    field(DESC, "Control scans")
+    field(SELM, "All")
+    field(SCAN, "5 second")
+    field(DOL0, "1")
+    field(DLY0, "0.2")
+    field(LNK0, "$(P)OUTPUTMODE.PROC")
+
+    field(DOL1, "1")
+    field(DLY1, "0.2")
+    field(LNK1, "$(P)OUTPUTSTATUS.PROC")
+
+    field(DOL2, "1")
+    field(DLY2, "0.2")
+    field(LNK2, "$(P)VOLTAGE:RANGE.PROC")
 
     field(DOL3, "1")
-    field(DLY3, "0.05")
-    field(LNK3, "$(P)VOLTAGE:SP:RBV.PROC")
+    field(DLY3, "0.2")
+    field(LNK3, "$(P)CURRENT:RANGE.PROC")	
 
     field(DOL4, "1")
-    field(DLY4, "0.05")
-    field(LNK4, "$(P)OUTPUTMODE.PROC")
-
-    field(DOL5, "1")
-    field(DLY5, "0.05")
-    field(LNK5, "$(P)OUTPUTSTATUS.PROC")
-
-    field(DOL6, "1")
-    field(DLY6, "0.05")
-    field(LNK6, "$(P)VOLTAGE:RANGE.PROC")
-
-    field(DOL7, "1")
-    field(DLY7, "0.05")
-    field(LNK7, "$(P)CURRENT:RANGE.PROC")
-
+    field(DLY4, "0.2")
+    field(LNK4, "$(P)_CURRENT:SP:RBV.PROC CA")
 }
 
 record(mbbi, "$(P)SIM:CURRENT:RANGE")

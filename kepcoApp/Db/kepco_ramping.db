@@ -5,13 +5,18 @@ record(ao, "$(P)CURRENT:SP")
 {
     field(DESC, "Current setpoint")
     field(EGU, "A")
-    field(DRVH, $(CURRENT_MAX))
-    field(DRVL, "-$(CURRENT_MAX)")
+    field(DRVH, $(CURRENT_MAX=0))
+    field(DRVL, "-$(CURRENT_MAX=0)")
     field(FLNK, "$(P)AUTORAMP:SP")
     info(INTEREST, "HIGH")
-    info(archive, "VAL")
     field(PINI, "$(AUTOSAVE_CURRENT)")
+    field(PREC, "3")
+# if we are rapidly setting (e.g. muon zerofield) we do not 
+# want to log every write
+$(IFNOTREMOTE_ON_SET=#) field(ASG, "NOTRAPW")
     info(autosaveFields, "VAL")
+$(IFNOTREMOTE_ON_SET=#) info(archive, "5.0 VAL")
+$(IFREMOTE_ON_SET=) info(archive, "VAL")    
 }
 
 # This set point is passed to the ReadASCII ramp, which decides what value to pass on to the device.
@@ -21,8 +26,9 @@ record(ao, "$(P)CURRENT:RAW:SP")
     field(DTYP, "asynFloat64")
     field(OUT, "@asyn($(READ),0,1)TGT")
     field(EGU, "A")
-    field(DRVH, $(CURRENT_MAX))
-    field(DRVL, "-$(CURRENT_MAX)")
+    field(PREC, "3")
+    field(DRVH, $(CURRENT_MAX=0))
+    field(DRVL, "-$(CURRENT_MAX=0)")
 }
 
 # This set point is read back from the ReadASCII ramp to say where it is ramping to
@@ -36,7 +42,10 @@ record(ao, "$(P)CURRENT:SP:RBV")
     field(EGU, "A")
     field(PREC, "3")
     info(INTEREST, "MEDIUM")
-    info(archive, "VAL")
+# if we are rapidly setting (e.g. muon zerofield) we do not 
+# want to log everything
+$(IFNOTREMOTE_ON_SET=#) info(archive, "5.0 VAL")
+$(IFREMOTE_ON_SET=) info(archive, "VAL")    
 }
 
 record(ao, "$(P)RAMP:RATE:SP")

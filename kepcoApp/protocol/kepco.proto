@@ -1,5 +1,13 @@
-Terminator = '\r\n';
+InTerminator = '\r\n';
+OutTerminator = '\n';
 ReplyTimeout = 2000;
+
+waitdelay = 10;
+
+goRemote {
+    out "SYST:REM 1";
+    wait $waitdelay;
+}
 
 getIDN {
     out "*IDN?";
@@ -7,6 +15,7 @@ getIDN {
     in "%/(.{0,39})/";
     ExtraInput = Ignore;
 }
+
 
 getFirmware {
     out "*IDN?";
@@ -26,56 +35,83 @@ setRemote
 readActualCurrent {
     out "MEAS:CURR?";
     in "%f";
-    ExtraInput = Ignore;
 }
 
 readSetpointCurrent {
     out "CURR?";
     in "%f";
-    ExtraInput = Ignore;
 }
 
 writeCurrent {
-    # Set into remote mode in order to communicate current
-    out "SYST:REM 1";
-
-    # Communicate current
+    # Set into remote mode and communicate current
+    goRemote;
     out "CURR %f";
+    wait $waitdelay;
+}
+
+# special for muon zerofield
+# the wait 60 will not normally cause a wait as usually the 
+# psu writes are so small in the zerofield that they are within
+# its tolerance of previous write. We had 20ms before but possibly
+# too small. Varios items on web that may or may not be relevant talk about
+# tolerance for kepco to respond. They may more relate to output than
+# setpoint readback, but 60 seems to be the biggest number mentioned. 
+writeCurrentNoRemote {
+    # communicate current
+    out "CURR %f";
+    # need to wait briefly otherwise
+    # seem to get an inaccurate setpoint readback reading
+    wait 60;
+#    out "CURR?";
+#    in "%(\$1_CURRENT:SP:RBV)f";
 }
 
 readActualVoltage {
     out "MEAS:VOLT?";
     in "%f";
-    ExtraInput = Ignore;
 }
 
 readSetpointVoltage {
     out "VOLT?";
     in "%f";
-    ExtraInput = Ignore;
 }
 
 writeVoltage {
-    # Set into remote mode in order to communicate voltage
-    out "SYST:REM 1";
-
-    # Communicate voltage
+    # Set into remote mode and communicate voltage
+    goRemote;
     out "VOLT %f";
+    wait $waitdelay;
+}
+
+writeVoltageNoRemote {
+    # communicate voltage
+    out "VOLT %f";
+    wait 20;
 }
 
 readOutputMode
 {
     out "FUNC:MODE?";
     in "%d";
-    ExtraInput = Ignore;
+}
+
+sendCommand
+{
+    out "%s";
+    wait $waitdelay;
+}
+
+sendCommandAndRead
+{
+    out "%s";
+    in "%39c";
+    ExtraInput = Ignore;    
 }
 
 setOutputMode
 {
-    # Set into remote mode in order to communicate output mode
-    out "SYST:REM 1";
-
-    # Communicate output mode
+    # Set into remote mode and Communicate output mode
+    goRemote;
     out "FUNC:MODE %{VOLT|CURR}";
 }
 
@@ -83,15 +119,12 @@ readOutputStatus
 {
     out "OUTP?";
     in "%d";
-    ExtraInput = Ignore;
 }
 
 setOutputStatus
 {
-    # Set into remote mode in order to communicate output status
-    out "SYST:REM 1";
-
-    # Communicate output status
+    # Set into remote mode and communicate output status
+    goRemote;
     out "OUTP %{0|1}";
 }
 
@@ -103,32 +136,36 @@ RST
 getCurrentRange
 {
     out "CURR:RANG?";
-	in "%d";
+    in "%d";
 }
 
 getVoltageRange
 {
     out "VOLT:RANG?";
-	in "%d";
+    in "%d";
 }
 
 setCurrentRange
 {
+    goRemote;
     out "CURR:RANG %d";
 }
 
 setVoltageRange
 {
+    goRemote;
     out "VOLT:RANG %d";
 }
 
 setAutoCurrentRange
 {
+    goRemote;
     out "CURR:RANG:AUTO %d";
 }
 
 setAutoVoltageRange
 {
+    goRemote;
     out "VOLT:RANG:AUTO %d";
 }
 
