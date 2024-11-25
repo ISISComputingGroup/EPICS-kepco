@@ -15,3 +15,4 @@ relPaths.sh
 /iocs/simulator/dbd/
 .project
 NULL
+dllCopy.bat
