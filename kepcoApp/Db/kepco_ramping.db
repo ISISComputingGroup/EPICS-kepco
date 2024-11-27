@@ -162,3 +162,5 @@ record(seq, "$(P)AUTORAMP:SP") {
     field(SHFT, "0")
     field(SELL, "$(P)AUTORAMP:CALC")
 }
+
+alias("$(P)CURRENT:SP", "$(P)CURR:SP")
