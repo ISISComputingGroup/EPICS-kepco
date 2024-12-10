@@ -611,3 +611,7 @@ record(mbbi, "$(P)SIM:VOLTAGE:RANGE")
 record(longout, "$(P)SIM:VOLTAGE:RANGE:AUTO")
 {
 }
+
+alias("$(P)CURRENT", "$(P)CURR")
+alias("$(P)VOLTAGE", "$(P)VOLT")
+alias("$(P)VOLTAGE:SP", "$(P)VOLT:SP")
